@@ -59,7 +59,6 @@
     .guild-name { font-size: 14px; font-weight: 800; }
     .guild-stats { font-size: 11px; color: rgba(255, 255, 255, 0.6); display: flex; align-items: center; gap: 8px; margin-top: 3px; }
     .dot-online { width: 6px; height: 6px; background: #23a55a; border-radius: 50%; display: inline-block; }
-    .dot-member { width: 6px; height: 6px; background: rgba(255, 255, 255, 0.4); border-radius: 50%; display: inline-block; }
 
     .join-btn {
       background: #23a55a; color: #fff; text-decoration: none; font-size: 12px; font-weight: 700;
@@ -105,17 +104,15 @@
       </div>
     </a>
 
-    <!-- KHUNG DƯỚI: LINK MÁY CHỦ DISCORD (THAY LINK SERVER CỦA BẠN VÀO HREF) -->
-    <a href="https://discord.gg/your-invite-code" target="_blank" class="card-box guild-box">
+    <!-- KHUNG DƯỚI: LINK MÁY CHỦ DISCORD (TỰ ĐỘNG LẤY TÊN VÀ MEMBER ONLINE) -->
+    <a id="guild-link" href="https://discord.gg/your-invite-code" target="_blank" class="card-box guild-box">
       <div class="guild-left">
-        <!-- Thay link logo server của bạn vào src -->
-        <img class="guild-icon" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="Server Icon">
+        <!-- Đường dẫn ảnh logo server tùy chọn -->
+        <img id="guild-icon" class="guild-icon" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="Server Icon">
         <div>
-          <!-- Thay tên Server của bạn tại đây -->
-          <div class="guild-name">S3LF VLS</div>
+          <div id="guild-name" class="guild-name">Loading Server...</div>
           <div class="guild-stats">
-            <span><span class="dot-online"></span> 858 Online</span>
-            <span><span class="dot-member"></span> 3,019 Members</span>
+            <span><span class="dot-online"></span> <span id="guild-online">0</span> Online</span>
           </div>
         </div>
       </div>
@@ -132,10 +129,11 @@
 
   <script>
     const DISCORD_USER_ID = "862273858214821929"; 
+    const DISCORD_SERVER_ID = "1195301221251170304"; // THAY SERVER ID DISCORD CỦA BẠN VÀO ĐÂY
     const GITHUB_USER = "DNHA05";
     const GITHUB_REPO = "API-Docs";
 
-    // PHÁT NHẠC TỰ ĐỘNG TỪ FOLDER GITHUB
+    // 1. PHÁT NHẠC TỰ ĐỘNG TỪ FOLDER GITHUB
     async function initMusic() {
       try {
         const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/audio`);
@@ -152,7 +150,7 @@
       }
     }
 
-    // TẢI DỮ LIỆU DISCORD CÁ NHÂN (AVATAR, TÊN, TRẠNG THÁI)
+    // 2. TẢI DỮ LIỆU DISCORD CÁ NHÂN (AVATAR, TÊN, TRẠNG THÁI)
     async function updateDiscordData() {
       try {
         const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
@@ -163,11 +161,9 @@
           const status = result.data.discord_status;
           const name = user.global_name || user.username;
 
-          // Cập nhật tên
           document.getElementById('display-name').innerText = name;
           document.getElementById('user-link-name').innerText = user.username;
 
-          // Cập nhật Avatar
           if (user.avatar) {
             const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
             const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=256`;
@@ -175,14 +171,12 @@
             document.getElementById('mini-avatar').src = avatarUrl;
           }
 
-          // Cập nhật Trang trí Avatar (nếu có)
           if (user.avatar_decoration_data) {
             const deco = document.getElementById('avatar-deco');
             deco.src = `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png`;
             deco.style.display = 'block';
           }
 
-          // Cập nhật chữ trạng thái ở khung liên kết cá nhân
           const statusElem = document.getElementById('user-link-status');
           if (status === 'online') statusElem.innerText = 'Online now';
           else if (status === 'dnd') statusElem.innerText = 'Do Not Disturb';
@@ -190,12 +184,31 @@
           else statusElem.innerText = 'last seen recently';
         }
       } catch (err) {
-        console.error("Lỗi API Discord:", err);
+        console.error("Lỗi API Discord User:", err);
+      }
+    }
+
+    // 3. TỰ ĐỘNG LẤY THÔNG TIN SERVER DISCORD TỪ SERVER ID WIDGET
+    async function updateServerData() {
+      try {
+        const res = await fetch(`https://discord.com/api/guilds/${DISCORD_SERVER_ID}/widget.json`);
+        const data = await res.json();
+
+        if (data && data.name) {
+          document.getElementById('guild-name').innerText = data.name;
+          document.getElementById('guild-online').innerText = data.presence_count || 0;
+          if (data.instant_invite) {
+            document.getElementById('guild-link').href = data.instant_invite;
+          }
+        }
+      } catch (err) {
+        console.error("Lỗi lấy dữ liệu Server Discord:", err);
       }
     }
 
     initMusic();
     updateDiscordData();
+    updateServerData();
   </script>
 </body>
 </html>
