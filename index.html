@@ -15,7 +15,7 @@
       padding: 0;
     }
 
-    /* VIDEO BACKGROUND CHẠY FULL, LẶP LẠI VÀ KHÔNG BAO GIỜ BỊ ĐỨNG HÌNH */
+    /* VIDEO BACKGROUND CHẠY FULL VÀ LẶP LẠI (TẮT TIẾNG ĐỂ VIDEO LUÔN CHẠY MƯỢT) */
     #bg-video {
       position: fixed;
       top: 0;
@@ -44,6 +44,29 @@
       align-items: center; 
       padding: 20px;
       overflow-x: hidden;
+    }
+
+    /* NÚT THÔNG BÁO BẬT NHẠC (Ẩn đi sau khi click) */
+    #music-prompt {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      z-index: 999;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, -5px); }
     }
 
     .bio-container {
@@ -148,10 +171,16 @@
 </head>
 <body>
 
-  <!-- VIDEO NỀN (Tự động phát, lặp lại và tắt tiếng để chạy mượt mà không bị kẹt) -->
+  <!-- NÚT GỢI Ý CLICK ĐỂ PHÁT NHẠC (Do trình duyệt chặn tự động phát âm thanh) -->
+  <div id="music-prompt">🔊 Click vào đây để bật nhạc nền</div>
+
+  <!-- VIDEO NỀN -->
   <video autoplay muted loop playsinline id="bg-video">
     <source src="./carx-edited_by_cut3.mp4" type="video/mp4">
   </video>
+
+  <!-- THẺ AUDIO PHÁT NHẠC LẶP LẠI -->
+  <audio id="audio-player" loop></audio>
 
   <div class="bio-container">
     
@@ -219,9 +248,26 @@
   <script>
     const DISCORD_USER_ID = "862273858214821929"; 
     const DISCORD_INVITE_CODE = "XEaC68tVnv"; 
+    
+    const GITHUB_USER = "DNHA05";
+    const GITHUB_REPO = "API-Docs";
 
     let offlineTimestamp = null;
     let timerInterval = null;
+
+    // Tự động lấy file nhạc .mp3 từ thư mục audio trên GitHub của bạn
+    async function initMusic() {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/audio`);
+        const files = await res.json();
+        if (Array.isArray(files) && files.length > 0) {
+          const mp3Files = files.filter(f => f.name.endsWith('.mp3'));
+          if (mp3Files.length > 0) {
+            document.getElementById('audio-player').src = `./audio/${encodeURIComponent(mp3Files[0].name)}`;
+          }
+        }
+      } catch (err) { console.error("Lỗi tải nhạc:", err); }
+    }
 
     function formatLastSeen(ts) {
       if (!ts) return "last seen recently";
@@ -329,14 +375,19 @@
       } catch (err) { console.error("Lỗi API Server:", err); }
     }
 
+    initMusic();
     updateDiscordData();
     updateServerData();
     setInterval(updateDiscordData, 30000);
 
-    // Kích hoạt video chạy ngay khi có tương tác đầu tiên
+    // Kích hoạt phát nhạc và ẩn nút thông báo khi người dùng click vào trang
     window.addEventListener('click', () => {
-      const video = document.getElementById('bg-video');
-      if (video) video.play();
+      const audio = document.getElementById('audio-player');
+      if (audio.paused) {
+        audio.play().catch(e => console.log(e));
+      }
+      const prompt = document.getElementById('music-prompt');
+      if (prompt) prompt.style.display = 'none';
     }, { once: true });
   </script>
 </body>
