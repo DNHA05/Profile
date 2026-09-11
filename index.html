@@ -82,7 +82,7 @@
       font-size: 22px; 
       font-weight: 800; 
       color: #fff; 
-      min-height: 30px;
+      min-height: 28px;
       display: flex;
       align-items: center;
     }
@@ -91,7 +91,7 @@
     .typing-cursor {
       display: inline-block;
       width: 2px;
-      height: 20px;
+      height: 18px;
       background-color: #fff;
       margin-left: 4px;
       animation: blink 0.8s infinite;
@@ -191,6 +191,7 @@
         <img id="discord-avatar" class="avatar-img" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
       </div>
       <div>
+        <!-- Hiệu ứng gõ chữ -->
         <div class="display-name">
           <span id="typed-text"></span><span class="typing-cursor"></span>
         </div>
@@ -201,6 +202,7 @@
           <i class="fa-solid fa-rocket badge-icon" style="color: #e74c3c;"></i>
           <i class="fa-solid fa-shield-halved badge-icon" style="color: #e67e22;"></i>
         </div>
+        <!-- Thêm lại phần Sub-role -->
         <div class="sub-role">Helper @sel</div>
       </div>
     </div>
@@ -254,7 +256,7 @@
     let offlineTimestamp = null;
     let timerInterval = null;
 
-    // HIỆU ỨNG GÕ CHỮ & XÓA CHỮ (TYPING EFFECT)
+    // HIỆU ỨNG GÕ CHỮ & XÓA CHỮ (Hanh Lẻ Năm)
     const wordsToType = ["Hanh Lẻ Năm", "DNHA05", "Welcome to my Bio"];
     let wordIndex = 0;
     let charIndex = 0;
@@ -275,18 +277,17 @@
       let typeSpeed = isDeleting ? 70 : 120;
 
       if (!isDeleting && charIndex === currentWord.length) {
-        typeSpeed = 2000; // Dừng lại 2 giây khi đã gõ xong một từ
+        typeSpeed = 2000; 
         isDeleting = true;
       } else if (isDeleting && charIndex === 0) {
         isDeleting = false;
         wordIndex = (wordIndex + 1) % wordsToType.length;
-        typeSpeed = 500; // Nghỉ nửa giây trước khi gõ từ tiếp theo
+        typeSpeed = 500; 
       }
 
       setTimeout(typeEffect, typeSpeed);
     }
 
-    // Bắt đầu chạy hiệu ứng chữ khi tải trang
     document.addEventListener("DOMContentLoaded", () => {
       setTimeout(typeEffect, 500);
     });
