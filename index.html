@@ -15,7 +15,7 @@
       padding: 0;
     }
 
-    /* VIDEO BACKGROUND CHẠY FULL VÀ LẶP LẠI LIÊN TỤC */
+    /* VIDEO BACKGROUND CHẠY FULL, LẶP LẠI VÀ PHÁT CẢ ÂM THANH */
     #bg-video {
       position: fixed;
       top: 0;
@@ -148,17 +148,12 @@
 </head>
 <body>
 
-  <!-- VIDEO NỀN (Tự động phát và lặp lại liên tục) -->
-  <video autoplay muted loop playsinline id="bg-video">
+  <video autoplay loop playsinline id="bg-video">
     <source src="./carx-edited_by_cut3.mp4" type="video/mp4">
   </video>
 
-  <!-- NHẠC NỀN (Tự động phát và lặp lại) -->
-  <audio id="audio-player" autoplay loop></audio>
-
   <div class="bio-container">
     
-    <!-- HEADER PROFILE -->
     <div class="card-box profile-top">
       <div class="avatar-wrapper">
         <img id="avatar-deco" class="avatar-deco" style="display:none;" alt="Decoration">
@@ -177,7 +172,6 @@
       </div>
     </div>
 
-    <!-- KHUNG DISCORD CÁ NHÂN -->
     <a id="discord-user-link" href="https://discord.com/users/862273858214821929" target="_blank" class="card-box user-link-box">
       <div class="user-avatar-wrapper">
         <img id="mini-avatar" class="user-mini-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Mini Avatar">
@@ -196,7 +190,6 @@
       </div>
     </a>
 
-    <!-- KHUNG MÁY CHỦ DISCORD -->
     <a id="guild-link" href="#" target="_blank" class="card-box guild-box">
       <div class="guild-left">
         <img id="guild-icon" class="guild-icon" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="Server Icon">
@@ -211,7 +204,6 @@
       <div class="join-btn">Join</div>
     </a>
 
-    <!-- VIEW COUNT -->
     <div class="view-count">
       <i class="fa-regular fa-eye"></i>
       <span>3,152</span>
@@ -222,25 +214,9 @@
   <script>
     const DISCORD_USER_ID = "862273858214821929"; 
     const DISCORD_INVITE_CODE = "XEaC68tVnv"; 
-    
-    const GITHUB_USER = "DNHA05";
-    const GITHUB_REPO = "API-Docs";
 
     let offlineTimestamp = null;
     let timerInterval = null;
-
-    async function initMusic() {
-      try {
-        const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/audio`);
-        const files = await res.json();
-        if (Array.isArray(files) && files.length > 0) {
-          const mp3Files = files.filter(f => f.name.endsWith('.mp3'));
-          if (mp3Files.length > 0) {
-            document.getElementById('audio-player').src = `./audio/${encodeURIComponent(mp3Files[0].name)}`;
-          }
-        }
-      } catch (err) { console.error("Lỗi nhạc:", err); }
-    }
 
     function formatLastSeen(ts) {
       if (!ts) return "last seen recently";
@@ -348,7 +324,6 @@
       } catch (err) { console.error("Lỗi API Server:", err); }
     }
 
-    initMusic();
     updateDiscordData();
     updateServerData();
     setInterval(updateDiscordData, 30000);
