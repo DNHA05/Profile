@@ -245,11 +245,6 @@
 
           document.getElementById('status-dot').className = `status-dot ${status}`;
 
-          // Tự cập nhật Guild Tag nếu có Lanyard KV
-          if (data.kv && data.kv.guild_tag) {
-            document.getElementById('guild-tag-text').innerText = data.kv.guild_tag;
-          }
-
           // Xử lý trạng thái Status & Offline
           const statusElem = document.getElementById('user-link-status');
 
