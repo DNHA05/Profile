@@ -153,11 +153,10 @@
     <source src="./carx-edited_by_cut3.mp4" type="video/mp4">
   </video>
 
-    <!-- NHẠC NỀN AUDIO -->
-  <audio id="bg-audio" loop>
+  <!-- NHẠC NỀN AUDIO CHẠY NGẦM -->
+  <audio id="bg-audio" loop preload="auto">
     <source src="./nhac.mp3" type="audio/mp3">
   </audio>
-
 
   <div class="bio-container">
     
@@ -339,13 +338,24 @@
     updateServerData();
     setInterval(updateDiscordData, 30000);
 
-    // Tự động phát nhạc và video nền ngay khi có tương tác đầu tiên của người dùng (tránh bị trình duyệt chặn)
-    window.addEventListener('click', () => {
+    // Kích hoạt tự động phát nhạc và video
+    window.addEventListener('DOMContentLoaded', () => {
       const video = document.getElementById('bg-video');
       const bgAudio = document.getElementById('bg-audio');
-      if (video && video.paused) video.play();
-      if (bgAudio && bgAudio.paused) bgAudio.play();
-    }, { once: true });
+      
+      if (video) video.play().catch(() => {});
+      if (bgAudio) {
+        bgAudio.play().catch(() => {
+          const startAudio = () => {
+            bgAudio.play();
+            window.removeEventListener('click', startAudio);
+            window.removeEventListener('touchstart', startAudio);
+          };
+          window.addEventListener('click', startAudio);
+          window.addEventListener('touchstart', startAudio);
+        });
+      }
+    });
   </script>
 </body>
 </html>
