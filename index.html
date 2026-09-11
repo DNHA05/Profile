@@ -22,7 +22,7 @@
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
     }
 
-    /* ĐỊNH DẠNG KHUNG GENERAL */
+    /* ĐỊNH DẠNG KHUNG DẠNG CARD BLOCK */
     .card-box {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -50,14 +50,30 @@
     .user-avatar-wrapper { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
     .user-mini-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     
+    /* CSS CHẤM TRẠNG THÁI GIỐNG 100% UI DISCORD */
     .status-dot {
       position: absolute; bottom: -2px; right: -2px; width: 14px; height: 14px;
-      border-radius: 50%; border: 3px solid #141414; background-color: #747f8d;
+      border-radius: 50%; border: 3px solid #141414; box-sizing: content-box;
     }
     .status-dot.online { background-color: #23a55a; }
-    .status-dot.dnd { background-color: #f23f43; }
-    .status-dot.idle { background-color: #f0b232; }
-    .status-dot.offline { background-color: #747f8d; }
+    .status-dot.idle { 
+      background-color: #f0b232; 
+      -webkit-mask: radial-gradient(circle at 30% 30%, transparent 45%, #000 46%);
+      mask: radial-gradient(circle at 30% 30%, transparent 45%, #000 46%);
+    }
+    .status-dot.dnd { 
+      background-color: #f23f43; position: absolute;
+    }
+    .status-dot.dnd::after {
+      content: ""; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); width: 8px; height: 2px;
+      background-color: #141414; border-radius: 1px;
+    }
+    .status-dot.offline, .status-dot.invisible { 
+      background-color: #80848e; 
+      -webkit-mask: radial-gradient(circle, transparent 35%, #000 36%);
+      mask: radial-gradient(circle, transparent 35%, #000 36%);
+    }
 
     .user-link-info { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
     .user-name-row { display: flex; align-items: center; gap: 8px; }
@@ -162,7 +178,7 @@
 
   <script>
     const DISCORD_USER_ID = "862273858214821929"; 
-    const DISCORD_INVITE_CODE = "XEaC68tVnv"; // Điền mã invite server tại đây (Vd: discord.gg/abc -> điền "abc")
+    const DISCORD_INVITE_CODE = "XEaC68tVnv"; 
     
     const GITHUB_USER = "DNHA05";
     const GITHUB_REPO = "API-Docs";
@@ -170,7 +186,7 @@
     let offlineTimestamp = null;
     let timerInterval = null;
 
-    // PHÁT NHẠC GITHUB
+    // 1. PHÁT NHẠC GITHUB TỰ ĐỘNG
     async function initMusic() {
       try {
         const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/audio`);
@@ -181,10 +197,10 @@
             document.getElementById('audio-player').src = `./audio/${encodeURIComponent(mp3Files[0].name)}`;
           }
         }
-      } catch (err) { console.error("Lỗi nhạc:", err); }
+      } catch (err) { console.error("Lỗi tải nhạc:", err); }
     }
 
-    // ĐẾM THỜI GIAN OFFLINE
+    // 2. ĐẾM THỜI GIAN OFFLINE CỘNG DỒN
     function formatLastSeen(ts) {
       if (!ts) return "last seen recently";
       const diffSec = Math.floor((Date.now() - ts) / 1000);
@@ -197,7 +213,7 @@
       return `last seen ${days} day${days > 1 ? 's' : ''} ago`;
     }
 
-    // TẢI USER DISCORD
+    // 3. CẬP NHẬT DỮ LIỆU USER DISCORD (STATUS, AVATAR, EMOJI, LAST SEEN)
     async function updateDiscordData() {
       try {
         const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
@@ -225,24 +241,38 @@
             deco.style.display = 'block';
           }
 
+          // Cập nhật chấm trạng thái UI Discord
           document.getElementById('status-dot').className = `status-dot ${status}`;
 
-          // GUILD TAG
+          // Guild Tag
           const guildTagElem = document.getElementById('guild-tag');
           if (data.kv && data.kv.guild_tag) {
             document.getElementById('guild-tag-text').innerText = data.kv.guild_tag;
             guildTagElem.style.display = 'flex';
           }
 
-          // STATUS HÃY CỘNG DỒN TIẾN TRÌNH OFFLINE
+          // Xử lý status & tính thời gian Offline
           const statusElem = document.getElementById('user-link-status');
+
           if (status === 'offline') {
             statusElem.classList.add('offline-text');
-            if (!offlineTimestamp) offlineTimestamp = data.kv?.offline_since ? parseInt(data.kv.offline_since) : Date.now();
+
+            let savedOfflineTime = localStorage.getItem('discord_offline_time');
+            if (!savedOfflineTime) {
+              savedOfflineTime = Date.now();
+              localStorage.setItem('discord_offline_time', savedOfflineTime);
+            }
+
+            offlineTimestamp = parseInt(savedOfflineTime);
+
             if (timerInterval) clearInterval(timerInterval);
             statusElem.innerText = formatLastSeen(offlineTimestamp);
-            timerInterval = setInterval(() => { statusElem.innerText = formatLastSeen(offlineTimestamp); }, 10000);
+            timerInterval = setInterval(() => { 
+              statusElem.innerText = formatLastSeen(offlineTimestamp); 
+            }, 10000);
+
           } else {
+            localStorage.removeItem('discord_offline_time');
             statusElem.classList.remove('offline-text');
             offlineTimestamp = null;
             if (timerInterval) clearInterval(timerInterval);
@@ -254,7 +284,9 @@
                 if (customActivity.emoji.id) {
                   const ext = customActivity.emoji.animated ? 'gif' : 'png';
                   statusHTML += `<img class="status-emoji" src="https://cdn.discordapp.com/emojis/${customActivity.emoji.id}.${ext}"> `;
-                } else { statusHTML += `${customActivity.emoji.name} `; }
+                } else { 
+                  statusHTML += `${customActivity.emoji.name} `; 
+                }
               }
               if (customActivity.state) statusHTML += customActivity.state;
               statusElem.innerHTML = statusHTML || 'Online now';
@@ -266,7 +298,7 @@
       } catch (err) { console.error("Lỗi API User:", err); }
     }
 
-    // TẢI SERVER DISCORD
+    // 4. CẬP NHẬT DỮ LIỆU SERVER DISCORD
     async function updateServerData() {
       try {
         const res = await fetch(`https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`);
