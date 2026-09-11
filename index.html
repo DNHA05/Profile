@@ -8,17 +8,50 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
     
-    body {
-      background: #000 url('./carx-edited_by_cut3.mp4') center/cover no-repeat fixed;
-      color: #ffffff; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px;
+    /* BACKGROUND FULL MÀN HÌNH CHO CẢ PC VÀ MOBILE */
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
     }
 
+    body {
+      background: #000 url('./banner.gif') no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      color: #ffffff; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* Lớp phủ tối nền diện rộng tuyệt đối cho PC/Mobile */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.35); /* Độ tối mờ nền */
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* CONTAINER RESPONSIVE CHO MỌI THIẾT BỊ */
     .bio-container {
-      width: 100%; max-width: 380px;
-      background: rgba(20, 20, 20, 0.45);
+      width: 100%; 
+      max-width: 420px; /* Rộng rãi hơn chút trên PC, mobile vẫn gọn */
+      background: rgba(20, 20, 20, 0.5);
       backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 28px; padding: 18px; display: flex; flex-direction: column; gap: 12px;
+      border-radius: 28px; 
+      padding: 20px; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px;
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
     }
 
@@ -77,7 +110,7 @@
     .user-name-row { display: flex; align-items: center; gap: 8px; }
     .user-link-name { font-size: 15px; font-weight: 700; color: #56e368; }
 
-    /* CLAN / GUILD TAG BADGE UI (CHUẨN DISCORD CAPSULE) */
+    /* CLAN / GUILD TAG BADGE UI */
     .guild-tag-badge {
       display: inline-flex; align-items: center; gap: 5px;
       background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.08);
@@ -146,10 +179,9 @@
       <div class="user-link-info">
         <div class="user-name-row">
           <span id="user-link-name" class="user-link-name">Loading...</span>
-          <!-- PRIMARY GUILD / CLAN TAG GẮN CỨNG CHUẨN UI -->
           <div class="guild-tag-badge">
-            <img src="https://cdn3.emoji.gg/emojis/68950-purple-heart.gif" alt="badge">
-            <span>OwO</span>
+            <img src="https://cdn.discordapp.com/emojis/1183358043689459732.webp?size=44" alt="badge">
+            <span>SEL</span>
           </div>
         </div>
         <div id="user-link-status" class="user-link-status">Fetching status...</div>
@@ -189,7 +221,6 @@
     let offlineTimestamp = null;
     let timerInterval = null;
 
-    // 1. TẢI NHẠC GITHUB
     async function initMusic() {
       try {
         const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/audio`);
@@ -203,7 +234,6 @@
       } catch (err) { console.error("Lỗi nhạc:", err); }
     }
 
-    // 2. TÍNH THỜI GIAN OFFLINE CỘNG DỒN
     function formatLastSeen(ts) {
       if (!ts) return "last seen recently";
       const diffSec = Math.floor((Date.now() - ts) / 1000);
@@ -216,7 +246,6 @@
       return `last seen ${days} day${days > 1 ? 's' : ''} ago`;
     }
 
-    // 3. TẢI PROFILE & TRẠNG THÁI TỪ LANYARD
     async function updateDiscordData() {
       try {
         const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
@@ -246,7 +275,6 @@
 
           document.getElementById('status-dot').className = `status-dot ${status}`;
 
-          // XỬ LÝ TRẠNG THÁI HOẠT ĐỘNG
           const statusElem = document.getElementById('user-link-status');
 
           if (status === 'offline') {
@@ -295,7 +323,6 @@
       } catch (err) { console.error("Lỗi API User:", err); }
     }
 
-    // 4. TẢI DỮ LIỆU SERVER DISCORD
     async function updateServerData() {
       try {
         const res = await fetch(`https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`);
