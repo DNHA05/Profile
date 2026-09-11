@@ -15,7 +15,7 @@
       padding: 0;
     }
 
-    /* VIDEO BACKGROUND CHẠY FULL, LẶP LẠI VÀ PHÁT CẢ ÂM THANH */
+    /* VIDEO BACKGROUND CHẠY FULL, LẶP LẠI VÀ KHÔNG BAO GIỜ BỊ ĐỨNG HÌNH */
     #bg-video {
       position: fixed;
       top: 0;
@@ -148,12 +148,14 @@
 </head>
 <body>
 
-  <video autoplay loop playsinline id="bg-video">
+  <!-- VIDEO NỀN (Tự động phát, lặp lại và tắt tiếng để chạy mượt mà không bị kẹt) -->
+  <video autoplay muted loop playsinline id="bg-video">
     <source src="./carx-edited_by_cut3.mp4" type="video/mp4">
   </video>
 
   <div class="bio-container">
     
+    <!-- HEADER PROFILE -->
     <div class="card-box profile-top">
       <div class="avatar-wrapper">
         <img id="avatar-deco" class="avatar-deco" style="display:none;" alt="Decoration">
@@ -172,6 +174,7 @@
       </div>
     </div>
 
+    <!-- KHUNG DISCORD CÁ NHÂN -->
     <a id="discord-user-link" href="https://discord.com/users/862273858214821929" target="_blank" class="card-box user-link-box">
       <div class="user-avatar-wrapper">
         <img id="mini-avatar" class="user-mini-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Mini Avatar">
@@ -190,6 +193,7 @@
       </div>
     </a>
 
+    <!-- KHUNG MÁY CHỦ DISCORD -->
     <a id="guild-link" href="#" target="_blank" class="card-box guild-box">
       <div class="guild-left">
         <img id="guild-icon" class="guild-icon" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="Server Icon">
@@ -204,6 +208,7 @@
       <div class="join-btn">Join</div>
     </a>
 
+    <!-- VIEW COUNT -->
     <div class="view-count">
       <i class="fa-regular fa-eye"></i>
       <span>3,152</span>
@@ -327,6 +332,12 @@
     updateDiscordData();
     updateServerData();
     setInterval(updateDiscordData, 30000);
+
+    // Kích hoạt video chạy ngay khi có tương tác đầu tiên
+    window.addEventListener('click', () => {
+      const video = document.getElementById('bg-video');
+      if (video) video.play();
+    }, { once: true });
   </script>
 </body>
 </html>
