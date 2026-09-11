@@ -59,6 +59,30 @@
       font-weight: 400;
     }
 
+    /* HIỆU ỨNG CHỮ BAY KHI NHẤP CHUỘT */
+    .click-text-effect {
+      position: fixed;
+      font-size: 14px;
+      font-weight: 700;
+      color: #56e368;
+      text-shadow: 0 0 8px rgba(86, 227, 104, 0.6);
+      pointer-events: none;
+      user-select: none;
+      z-index: 10000;
+      animation: floatUpFade 0.8s ease-out forwards;
+    }
+
+    @keyframes floatUpFade {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.8);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -120%) scale(1.2);
+      }
+    }
+
     /* VIDEO BACKGROUND CHẠY FULL, LẶP LẠI VÀ KHÔNG BAO GIỜ BỊ ĐỨNG HÌNH */
     #bg-video {
       position: fixed;
@@ -121,7 +145,6 @@
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     .avatar-deco { position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; pointer-events: none; }
     
-    /* PHẦN TÊN CHÍNH Ở TRÊN (CÓ HIỆU ỨNG GÕ CHỮ RIÊNG) */
     .display-name { 
       font-size: 22px; 
       font-weight: 800; 
@@ -134,7 +157,6 @@
     .badges-row { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
     .badge-icon { font-size: 13px; color: rgba(255, 255, 255, 0.8); }
     
-    /* PHẦN SUB-ROLE Ở DƯỚI (CÓ HIỆU ỨNG GÕ CHỮ RIÊNG KHÁC NHAU) */
     .sub-role { 
       font-size: 13px; 
       color: rgba(255, 255, 255, 0.7); 
@@ -144,7 +166,6 @@
       align-items: center;
     }
     
-    /* HIỆU ỨNG CON TRỎ NHẤP NHÁY CHUNG CHO CẢ 2 */
     .typing-cursor {
       display: inline-block;
       width: 2px;
@@ -225,6 +246,7 @@
 </head>
 <body>
 
+  <!-- MÀN HÌNH CHÀO (ENTER + MUSIC WILL PLAY) -->
   <div id="splash-screen" onclick="enterSite()">
     <div class="splash-content">
       <div class="splash-title">Enter</div>
@@ -232,22 +254,26 @@
     </div>
   </div>
 
+  <!-- VIDEO NỀN -->
   <video autoplay muted loop playsinline id="bg-video">
     <source src="./carx-edited_by_cut3.mp4" type="video/mp4">
   </video>
 
+  <!-- NHẠC NỀN AUDIO CHẠY NGẦM -->
   <audio id="bg-audio" loop preload="auto">
     <source src="./nhac.mp3" type="audio/mp3">
   </audio>
 
   <div class="bio-container">
     
+    <!-- HEADER PROFILE -->
     <div class="card-box profile-top">
       <div class="avatar-wrapper">
         <img id="avatar-deco" class="avatar-deco" style="display:none;" alt="Decoration">
         <img id="discord-avatar" class="avatar-img" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
       </div>
       <div>
+        <!-- DÒNG TRÊN: HIỆU ỨNG GÕ CHỮ CHO TÊN CHÍNH -->
         <div class="display-name">
           <span id="typed-name"></span><span class="typing-cursor"></span>
         </div>
@@ -258,12 +284,14 @@
           <i class="fa-solid fa-rocket badge-icon" style="color: #e74c3c;"></i>
           <i class="fa-solid fa-shield-halved badge-icon" style="color: #e67e22;"></i>
         </div>
+        <!-- DÒNG DƯỚI: HIỆU ỨNG GÕ CHỮ CHO SUB-ROLE KHÁC NHAU -->
         <div class="sub-role">
           <span id="typed-role"></span>
         </div>
       </div>
     </div>
 
+    <!-- KHUNG DISCORD CÁ NHÂN -->
     <a id="discord-user-link" href="https://discord.com/users/862273858214821929" target="_blank" class="card-box user-link-box">
       <div class="user-avatar-wrapper">
         <img id="mini-avatar" class="user-mini-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Mini Avatar">
@@ -282,6 +310,7 @@
       </div>
     </a>
 
+    <!-- KHUNG MÁY CHỦ DISCORD -->
     <a id="guild-link" href="#" target="_blank" class="card-box guild-box">
       <div class="guild-left">
         <img id="guild-icon" class="guild-icon" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="Server Icon">
@@ -296,6 +325,7 @@
       <div class="join-btn">Join</div>
     </a>
 
+    <!-- VIEW COUNT -->
     <div class="view-count">
       <i class="fa-regular fa-eye"></i>
       <span>3,152</span>
@@ -327,6 +357,37 @@
       if (video) {
         video.play().catch(err => console.log("Không phát được video:", err));
       }
+    }
+
+    // TÍNH NĂNG HIỆN BIỂN CHỮ KHI NHẤP CHUỘT / CHẠM MÀN HÌNH
+    const clickPhrases = ["Hanh Lẻ Năm", "Dev", "Hello!", "OwO", "Click!", "Code Website"];
+    
+    window.addEventListener('click', (e) => {
+      // Tránh hiện chữ đè lên nút Enter lúc đầu nếu chưa bấm
+      const splash = document.getElementById('splash-screen');
+      if (splash && !splash.classList.contains('hidden')) return;
+
+      createFloatingText(e.clientX, e.clientY);
+    });
+
+    function createFloatingText(x, y) {
+      const el = document.createElement('div');
+      el.className = 'click-text-effect';
+      
+      // Chọn ngẫu nhiên một từ trong danh sách
+      const randomText = clickPhrases[Math.floor(Math.random() * clickPhrases.length)];
+      el.innerText = randomText;
+
+      // Đặt vị trí xuất hiện đúng chỗ click
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+
+      document.body.appendChild(el);
+
+      // Tự động xóa phần tử sau khi chạy xong animation (0.8s) để không bị nặng RAM
+      setTimeout(() => {
+        el.remove();
+      }, 800);
     }
 
     // 1. HIỆU ỨNG GÕ CHỮ CHO DÒNG TRÊN (Tên chính: Hanh Lẻ Năm)
@@ -361,7 +422,7 @@
       setTimeout(typeNameEffect, typeSpeed);
     }
 
-    // 2. HIỆU ỨNG GÕ CHỮ CHO DÒNG DƯỚI (Sub-role: Dev, Code Website, Welcome to my Bio)
+    // 2. HIỆU ỨNG GÕ CHỮ CHO DÒNG DƯỚI (Sub-role)
     const roleWords = ["Dev", "Code Website", "Welcome to my Bio"];
     let roleWordIndex = 0;
     let roleCharIndex = 0;
@@ -393,7 +454,6 @@
       setTimeout(typeRoleEffect, typeSpeed);
     }
 
-    // Bắt đầu chạy cả 2 hiệu ứng khi tải trang
     document.addEventListener("DOMContentLoaded", () => {
       setTimeout(typeNameEffect, 500);
       setTimeout(typeRoleEffect, 800);
