@@ -78,16 +78,20 @@
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     .avatar-deco { position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; pointer-events: none; }
     
+    /* PHẦN TÊN CHÍNH Ở TRÊN (CÓ HIỆU ỨNG GÕ CHỮ RIÊNG) */
     .display-name { 
       font-size: 22px; 
       font-weight: 800; 
       color: #fff; 
+      min-height: 28px;
+      display: flex;
+      align-items: center;
     }
     
     .badges-row { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
     .badge-icon { font-size: 13px; color: rgba(255, 255, 255, 0.8); }
     
-    /* SUB-ROLE CÓ HIỆU ỨNG GÕ CHỮ */
+    /* PHẦN SUB-ROLE Ở DƯỚI (CÓ HIỆU ỨNG GÕ CHỮ RIÊNG KHÁC NHAU) */
     .sub-role { 
       font-size: 13px; 
       color: rgba(255, 255, 255, 0.7); 
@@ -97,12 +101,12 @@
       align-items: center;
     }
     
-    /* HIỆU ỨNG CON TRỎ NHẤP NHÁY KHI GÕ CHỮ */
+    /* HIỆU ỨNG CON TRỎ NHẤP NHÁY CHUNG CHO CẢ 2 */
     .typing-cursor {
       display: inline-block;
       width: 2px;
-      height: 14px;
-      background-color: rgba(255, 255, 255, 0.7);
+      height: 16px;
+      background-color: #fff;
       margin-left: 4px;
       animation: blink 0.8s infinite;
     }
@@ -197,8 +201,10 @@
         <img id="discord-avatar" class="avatar-img" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
       </div>
       <div>
-        <!-- Tên chính cố định là Hanh Lẻ Năm -->
-        <div class="display-name">Hanh Lẻ Năm</div>
+        <!-- DÒNG TRÊN: HIỆU ỨNG GÕ CHỮ CHO TÊN CHÍNH -->
+        <div class="display-name">
+          <span id="typed-name"></span><span class="typing-cursor"></span>
+        </div>
         <div class="badges-row">
           <i class="fa-solid fa-bug badge-icon" style="color: #23a55a;"></i>
           <i class="fa-solid fa-gem badge-icon" style="color: #9b59b6;"></i>
@@ -206,9 +212,9 @@
           <i class="fa-solid fa-rocket badge-icon" style="color: #e74c3c;"></i>
           <i class="fa-solid fa-shield-halved badge-icon" style="color: #e67e22;"></i>
         </div>
-        <!-- Phần Sub-role ở dưới có hiệu ứng gõ/xóa chữ -->
+        <!-- DÒNG DƯỚI: HIỆU ỨNG GÕ CHỮ CHO SUB-ROLE KHÁC NHAU -->
         <div class="sub-role">
-          <span id="typed-text"></span><span class="typing-cursor"></span>
+          <span id="typed-role"></span>
         </div>
       </div>
     </div>
@@ -262,40 +268,74 @@
     let offlineTimestamp = null;
     let timerInterval = null;
 
-    // HIỆU ỨNG GÕ CHỮ CHO PHẦN SUB-ROLE Ở DƯỚI
-    const wordsToType = ["Helper @sel", "DNHA05", "Welcome to my Bio"];
-    let wordIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    const typedTextSpan = document.getElementById("typed-text");
+    // 1. HIỆU ỨNG GÕ CHỮ CHO DÒNG TRÊN (Tên chính: Hanh Lẻ Năm, v.v.)
+    const nameWords = ["Hanh Lẻ Năm", "DNHA05"];
+    let nameWordIndex = 0;
+    let nameCharIndex = 0;
+    let nameIsDeleting = false;
+    const typedNameSpan = document.getElementById("typed-name");
 
-    function typeEffect() {
-      const currentWord = wordsToType[wordIndex];
+    function typeNameEffect() {
+      const currentWord = nameWords[nameWordIndex];
       
-      if (isDeleting) {
-        typedTextSpan.textContent = currentWord.substring(0, charIndex - 1);
-        charIndex--;
+      if (nameIsDeleting) {
+        typedNameSpan.textContent = currentWord.substring(0, nameCharIndex - 1);
+        nameCharIndex--;
       } else {
-        typedTextSpan.textContent = currentWord.substring(0, charIndex + 1);
-        charIndex++;
+        typedNameSpan.textContent = currentWord.substring(0, nameCharIndex + 1);
+        nameCharIndex++;
       }
 
-      let typeSpeed = isDeleting ? 70 : 120;
+      let typeSpeed = nameIsDeleting ? 70 : 120;
 
-      if (!isDeleting && charIndex === currentWord.length) {
+      if (!nameIsDeleting && nameCharIndex === currentWord.length) {
         typeSpeed = 2000; 
-        isDeleting = true;
-      } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        wordIndex = (wordIndex + 1) % wordsToType.length;
+        nameIsDeleting = true;
+      } else if (nameIsDeleting && nameCharIndex === 0) {
+        nameIsDeleting = false;
+        nameWordIndex = (nameWordIndex + 1) % nameWords.length;
         typeSpeed = 500; 
       }
 
-      setTimeout(typeEffect, typeSpeed);
+      setTimeout(typeNameEffect, typeSpeed);
     }
 
+    // 2. HIỆU ỨNG GÕ CHỮ CHO DÒNG DƯỚI (Sub-role: Helper @sel, v.v.)
+    const roleWords = ["Helper @sel", "Developer", "Welcome to my Bio"];
+    let roleWordIndex = 0;
+    let roleCharIndex = 0;
+    let roleIsDeleting = false;
+    const typedRoleSpan = document.getElementById("typed-role");
+
+    function typeRoleEffect() {
+      const currentWord = roleWords[roleWordIndex];
+      
+      if (roleIsDeleting) {
+        typedRoleSpan.textContent = currentWord.substring(0, roleCharIndex - 1);
+        roleCharIndex--;
+      } else {
+        typedRoleSpan.textContent = currentWord.substring(0, roleCharIndex + 1);
+        roleCharIndex++;
+      }
+
+      let typeSpeed = roleIsDeleting ? 50 : 90;
+
+      if (!roleIsDeleting && roleCharIndex === currentWord.length) {
+        typeSpeed = 2000; 
+        roleIsDeleting = true;
+      } else if (roleIsDeleting && roleCharIndex === 0) {
+        roleIsDeleting = false;
+        roleWordIndex = (roleWordIndex + 1) % roleWords.length;
+        typeSpeed = 400; 
+      }
+
+      setTimeout(typeRoleEffect, typeSpeed);
+    }
+
+    // Bắt đầu chạy cả 2 hiệu ứng khi tải trang
     document.addEventListener("DOMContentLoaded", () => {
-      setTimeout(typeEffect, 500);
+      setTimeout(typeNameEffect, 500);
+      setTimeout(typeRoleEffect, 800);
     });
 
     function formatLastSeen(ts) {
@@ -385,7 +425,7 @@
       } catch (err) { console.error("Lỗi API User:", err); }
     }
 
-    async function updateServerServerData() {
+    async function updateServerData() {
       try {
         const res = await fetch(`https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`);
         const data = await res.json();
@@ -403,7 +443,7 @@
     }
 
     updateDiscordData();
-    updateServerServerData();
+    updateServerData();
     setInterval(updateDiscordData, 30000);
 
     // Kích hoạt tự động phát nhạc và video
