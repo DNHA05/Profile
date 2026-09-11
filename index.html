@@ -144,51 +144,23 @@
     .join-btn:hover { background: #1f924e; }
 
     .view-count { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255, 255, 255, 0.7); font-weight: 600; padding: 2px 6px; }
-
-    /* NÚT BẬT/TẮT NHẠC */
-    .music-control {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(20, 20, 20, 0.6);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #fff;
-      padding: 10px 14px;
-      border-radius: 50px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      z-index: 10;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .music-control:hover {
-      background: rgba(255, 255, 255, 0.15);
-      transform: scale(1.05);
-    }
   </style>
 </head>
 <body>
 
+  <!-- VIDEO NỀN -->
   <video autoplay muted loop playsinline id="bg-video">
     <source src="./carx-edited_by_cut3.mp4" type="video/mp4">
   </video>
 
+  <!-- NHẠC NỀN AUDIO CHẠY NGẦM -->
   <audio id="bg-audio" loop>
-    <source src="./your-music.mp3" type="audio/mp3">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
   </audio>
-
-  <div id="music-btn" class="music-control">
-    <i class="fa-solid fa-volume-xmark" id="music-icon"></i>
-    <span id="music-text">Nhạc: Tắt</span>
-  </div>
 
   <div class="bio-container">
     
+    <!-- HEADER PROFILE -->
     <div class="card-box profile-top">
       <div class="avatar-wrapper">
         <img id="avatar-deco" class="avatar-deco" style="display:none;" alt="Decoration">
@@ -207,6 +179,7 @@
       </div>
     </div>
 
+    <!-- KHUNG DISCORD CÁ NHÂN -->
     <a id="discord-user-link" href="https://discord.com/users/862273858214821929" target="_blank" class="card-box user-link-box">
       <div class="user-avatar-wrapper">
         <img id="mini-avatar" class="user-mini-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Mini Avatar">
@@ -225,6 +198,7 @@
       </div>
     </a>
 
+    <!-- KHUNG MÁY CHỦ DISCORD -->
     <a id="guild-link" href="#" target="_blank" class="card-box guild-box">
       <div class="guild-left">
         <img id="guild-icon" class="guild-icon" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="Server Icon">
@@ -239,6 +213,7 @@
       <div class="join-btn">Join</div>
     </a>
 
+    <!-- VIEW COUNT -->
     <div class="view-count">
       <i class="fa-regular fa-eye"></i>
       <span>3,152</span>
@@ -363,29 +338,13 @@
     updateServerData();
     setInterval(updateDiscordData, 30000);
 
-    // Xử lý phát nhạc & video khi người dùng tương tác lần đầu
+    // Tự động phát nhạc và video nền ngay khi có tương tác đầu tiên của người dùng (tránh bị trình duyệt chặn)
     window.addEventListener('click', () => {
       const video = document.getElementById('bg-video');
-      if (video) video.play();
+      const bgAudio = document.getElementById('bg-audio');
+      if (video && video.paused) video.play();
+      if (bgAudio && bgAudio.paused) bgAudio.play();
     }, { once: true });
-
-    // Xử lý nút bật/tắt nhạc
-    const musicBtn = document.getElementById('music-btn');
-    const bgAudio = document.getElementById('bg-audio');
-    const musicIcon = document.getElementById('music-icon');
-    const musicText = document.getElementById('music-text');
-
-    musicBtn.addEventListener('click', () => {
-      if (bgAudio.paused) {
-        bgAudio.play();
-        musicIcon.className = "fa-solid fa-volume-high";
-        musicText.innerText = "Nhạc: Bật";
-      } else {
-        bgAudio.pause();
-        musicIcon.className = "fa-solid fa-volume-xmark";
-        musicText.innerText = "Nhạc: Tắt";
-      }
-    });
   </script>
 </body>
 </html>
