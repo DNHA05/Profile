@@ -13,6 +13,50 @@
       min-height: 100vh;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* MÀN HÌNH CHÀO (ENTER + MUSIC WILL PLAY) */
+    #splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #0b0b0b;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      cursor: pointer;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+
+    #splash-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-content {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .splash-title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    .splash-subtitle {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 400;
     }
 
     /* VIDEO BACKGROUND CHẠY FULL, LẶP LẠI VÀ KHÔNG BAO GIỜ BỊ ĐỨNG HÌNH */
@@ -37,13 +81,12 @@
     }
 
     body {
-      background: transparent;
+      background: #0b0b0b;
       color: #ffffff; 
       display: flex; 
       justify-content: center; 
       align-items: center; 
       padding: 20px;
-      overflow-x: hidden;
     }
 
     .bio-container {
@@ -182,26 +225,29 @@
 </head>
 <body>
 
-  <!-- VIDEO NỀN -->
+  <div id="splash-screen" onclick="enterSite()">
+    <div class="splash-content">
+      <div class="splash-title">Enter</div>
+      <div class="splash-subtitle">Music will play</div>
+    </div>
+  </div>
+
   <video autoplay muted loop playsinline id="bg-video">
     <source src="./carx-edited_by_cut3.mp4" type="video/mp4">
   </video>
 
-  <!-- NHẠC NỀN AUDIO CHẠY NGẦM -->
   <audio id="bg-audio" loop preload="auto">
     <source src="./nhac.mp3" type="audio/mp3">
   </audio>
 
   <div class="bio-container">
     
-    <!-- HEADER PROFILE -->
     <div class="card-box profile-top">
       <div class="avatar-wrapper">
         <img id="avatar-deco" class="avatar-deco" style="display:none;" alt="Decoration">
         <img id="discord-avatar" class="avatar-img" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
       </div>
       <div>
-        <!-- DÒNG TRÊN: HIỆU ỨNG GÕ CHỮ CHO TÊN CHÍNH -->
         <div class="display-name">
           <span id="typed-name"></span><span class="typing-cursor"></span>
         </div>
@@ -212,14 +258,12 @@
           <i class="fa-solid fa-rocket badge-icon" style="color: #e74c3c;"></i>
           <i class="fa-solid fa-shield-halved badge-icon" style="color: #e67e22;"></i>
         </div>
-        <!-- DÒNG DƯỚI: HIỆU ỨNG GÕ CHỮ CHO SUB-ROLE KHÁC NHAU -->
         <div class="sub-role">
           <span id="typed-role"></span>
         </div>
       </div>
     </div>
 
-    <!-- KHUNG DISCORD CÁ NHÂN -->
     <a id="discord-user-link" href="https://discord.com/users/862273858214821929" target="_blank" class="card-box user-link-box">
       <div class="user-avatar-wrapper">
         <img id="mini-avatar" class="user-mini-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Mini Avatar">
@@ -238,7 +282,6 @@
       </div>
     </a>
 
-    <!-- KHUNG MÁY CHỦ DISCORD -->
     <a id="guild-link" href="#" target="_blank" class="card-box guild-box">
       <div class="guild-left">
         <img id="guild-icon" class="guild-icon" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="Server Icon">
@@ -253,7 +296,6 @@
       <div class="join-btn">Join</div>
     </a>
 
-    <!-- VIEW COUNT -->
     <div class="view-count">
       <i class="fa-regular fa-eye"></i>
       <span>3,152</span>
@@ -268,7 +310,26 @@
     let offlineTimestamp = null;
     let timerInterval = null;
 
-    // 1. HIỆU ỨNG GÕ CHỮ CHO DÒNG TRÊN (Tên chính: Hanh Lẻ Năm, v.v.)
+    // HÀM KHI NHẤN VÀO MÀN HÌNH "ENTER"
+    function enterSite() {
+      const splash = document.getElementById('splash-screen');
+      const bgAudio = document.getElementById('bg-audio');
+      const video = document.getElementById('bg-video');
+
+      if (splash) {
+        splash.classList.add('hidden');
+      }
+
+      if (bgAudio) {
+        bgAudio.play().catch(err => console.log("Không phát được nhạc:", err));
+      }
+
+      if (video) {
+        video.play().catch(err => console.log("Không phát được video:", err));
+      }
+    }
+
+    // 1. HIỆU ỨNG GÕ CHỮ CHO DÒNG TRÊN (Tên chính: Hanh Lẻ Năm)
     const nameWords = ["Hanh Lẻ Năm"];
     let nameWordIndex = 0;
     let nameCharIndex = 0;
@@ -300,7 +361,7 @@
       setTimeout(typeNameEffect, typeSpeed);
     }
 
-    // 2. HIỆU ỨNG GÕ CHỮ CHO DÒNG DƯỚI (Sub-role: Helper @sel, v.v.)
+    // 2. HIỆU ỨNG GÕ CHỮ CHO DÒNG DƯỚI (Sub-role: Dev, Code Website, Welcome to my Bio)
     const roleWords = ["Dev", "Code Website", "Welcome to my Bio"];
     let roleWordIndex = 0;
     let roleCharIndex = 0;
@@ -445,25 +506,6 @@
     updateDiscordData();
     updateServerData();
     setInterval(updateDiscordData, 30000);
-
-    // Kích hoạt tự động phát nhạc và video
-    window.addEventListener('DOMContentLoaded', () => {
-      const video = document.getElementById('bg-video');
-      const bgAudio = document.getElementById('bg-audio');
-      
-      if (video) video.play().catch(() => {});
-      if (bgAudio) {
-        bgAudio.play().catch(() => {
-          const startAudio = () => {
-            bgAudio.play();
-            window.removeEventListener('click', startAudio);
-            window.removeEventListener('touchstart', startAudio);
-          };
-          window.addEventListener('click', startAudio);
-          window.addEventListener('touchstart', startAudio);
-        });
-      }
-    });
   </script>
 </body>
 </html>
