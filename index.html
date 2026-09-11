@@ -50,7 +50,7 @@
     .user-avatar-wrapper { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
     .user-mini-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     
-    /* CHẤM TRẠNG THÁI chuẩn UI DISCORD */
+    /* CHẤM TRẠNG THÁI CHUẨN UI DISCORD */
     .status-dot {
       position: absolute; bottom: -2px; right: -2px; width: 14px; height: 14px;
       border-radius: 50%; border: 3px solid #141414; box-sizing: content-box;
@@ -77,14 +77,14 @@
     .user-name-row { display: flex; align-items: center; gap: 8px; }
     .user-link-name { font-size: 15px; font-weight: 700; color: #56e368; }
 
-    /* CLAN / GUILD TAG BADGE UI */
+    /* CLAN / GUILD TAG BADGE UI (CHUẨN DISCORD CAPSULE) */
     .guild-tag-badge {
-      display: none; align-items: center;
-      background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 2px 6px; border-radius: 6px; font-size: 11px; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: 700;
       color: #ffffff; line-height: 1;
     }
-    .guild-tag-badge img { width: 12px; height: 12px; margin-right: 4px; object-fit: contain; }
+    .guild-tag-badge img { width: 14px; height: 14px; object-fit: contain; }
 
     .user-link-status { 
       font-size: 13px; color: #56e368; display: flex; align-items: center; gap: 6px; 
@@ -146,8 +146,10 @@
       <div class="user-link-info">
         <div class="user-name-row">
           <span id="user-link-name" class="user-link-name">Loading...</span>
-          <div id="guild-tag" class="guild-tag-badge">
-            <span id="guild-tag-text"></span>
+          <!-- PRIMARY GUILD / CLAN TAG GẮN CỨNG CHUẨN UI -->
+          <div class="guild-tag-badge">
+            <img src="https://cdn.discordapp.com/emojis/1183358043689459732.webp?size=44" alt="badge">
+            <span>OwO</span>
           </div>
         </div>
         <div id="user-link-status" class="user-link-status">Fetching status...</div>
@@ -243,22 +245,6 @@
           }
 
           document.getElementById('status-dot').className = `status-dot ${status}`;
-
-          // TỰ ĐỘNG LẤY CLAN BADGE & TAG (NHƯ ẢNH OWO)
-          const guildTagElem = document.getElementById('guild-tag');
-          if (data.clan) {
-            let clanHTML = '';
-            if (data.clan.badge) {
-              const badgeUrl = `https://cdn.discordapp.com/clan-badges/${data.clan.identity_guild_id}/${data.clan.badge}.png`;
-              clanHTML += `<img src="${badgeUrl}" alt="Badge">`;
-            }
-            clanHTML += `<span>${data.clan.tag}</span>`;
-            guildTagElem.innerHTML = clanHTML;
-            guildTagElem.style.display = 'inline-flex';
-          } else if (data.kv && data.kv.guild_tag) {
-            document.getElementById('guild-tag-text').innerText = data.kv.guild_tag;
-            guildTagElem.style.display = 'inline-flex';
-          }
 
           // XỬ LÝ TRẠNG THÁI HOẠT ĐỘNG
           const statusElem = document.getElementById('user-link-status');
