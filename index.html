@@ -77,7 +77,31 @@
     .avatar-wrapper { position: relative; width: 75px; height: 75px; flex-shrink: 0; }
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     .avatar-deco { position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; pointer-events: none; }
-    .display-name { font-size: 22px; font-weight: 800; color: #fff; }
+    
+    .display-name { 
+      font-size: 22px; 
+      font-weight: 800; 
+      color: #fff; 
+      min-height: 30px;
+      display: flex;
+      align-items: center;
+    }
+    
+    /* HIỆU ỨNG CON TRỎ NHẤP NHÁY KHI GÕ CHỮ */
+    .typing-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 20px;
+      background-color: #fff;
+      margin-left: 4px;
+      animation: blink 0.8s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
     .badges-row { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
     .badge-icon { font-size: 13px; color: rgba(255, 255, 255, 0.8); }
     .sub-role { font-size: 13px; color: rgba(255, 255, 255, 0.7); font-weight: 500; }
@@ -167,7 +191,9 @@
         <img id="discord-avatar" class="avatar-img" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
       </div>
       <div>
-        <div id="display-name" class="display-name">Loading...</div>
+        <div class="display-name">
+          <span id="typed-text"></span><span class="typing-cursor"></span>
+        </div>
         <div class="badges-row">
           <i class="fa-solid fa-bug badge-icon" style="color: #23a55a;"></i>
           <i class="fa-solid fa-gem badge-icon" style="color: #9b59b6;"></i>
@@ -228,6 +254,43 @@
     let offlineTimestamp = null;
     let timerInterval = null;
 
+    // HIỆU ỨNG GÕ CHỮ & XÓA CHỮ (TYPING EFFECT)
+    const wordsToType = ["Hanh Lẻ Năm", "DNHA05", "Welcome to my Bio"];
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const typedTextSpan = document.getElementById("typed-text");
+
+    function typeEffect() {
+      const currentWord = wordsToType[wordIndex];
+      
+      if (isDeleting) {
+        typedTextSpan.textContent = currentWord.substring(0, charIndex - 1);
+        charIndex--;
+      } else {
+        typedTextSpan.textContent = currentWord.substring(0, charIndex + 1);
+        charIndex++;
+      }
+
+      let typeSpeed = isDeleting ? 70 : 120;
+
+      if (!isDeleting && charIndex === currentWord.length) {
+        typeSpeed = 2000; // Dừng lại 2 giây khi đã gõ xong một từ
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % wordsToType.length;
+        typeSpeed = 500; // Nghỉ nửa giây trước khi gõ từ tiếp theo
+      }
+
+      setTimeout(typeEffect, typeSpeed);
+    }
+
+    // Bắt đầu chạy hiệu ứng chữ khi tải trang
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(typeEffect, 500);
+    });
+
     function formatLastSeen(ts) {
       if (!ts) return "last seen recently";
       const diffSec = Math.floor((Date.now() - ts) / 1000);
@@ -249,9 +312,7 @@
           const data = result.data;
           const user = data.discord_user;
           const status = data.discord_status;
-          const name = user.global_name || user.username;
 
-          document.getElementById('display-name').innerText = name;
           document.getElementById('user-link-name').innerText = user.username;
 
           if (user.avatar) {
