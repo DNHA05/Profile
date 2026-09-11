@@ -22,7 +22,7 @@
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
     }
 
-    /* ĐỊNH DẠNG KHUNG DẠNG CARD BLOCK */
+    /* ĐỊNH DẠNG CARD BLOCK */
     .card-box {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -35,7 +35,7 @@
       transform: translateY(-2px);
     }
 
-    /* 1. KHUNG TOP (HEADER PROFILE) */
+    /* 1. KHUNG HEADER PROFILE */
     .profile-top { display: flex; align-items: center; gap: 14px; }
     .avatar-wrapper { position: relative; width: 75px; height: 75px; flex-shrink: 0; }
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
@@ -45,12 +45,12 @@
     .badge-icon { font-size: 13px; color: rgba(255, 255, 255, 0.8); }
     .sub-role { font-size: 13px; color: rgba(255, 255, 255, 0.7); font-weight: 500; }
 
-    /* 2. KHUNG LINK DISCORD CÁ NHÂN */
+    /* 2. KHUNG DISCORD CÁ NHÂN */
     .user-link-box { align-items: center; gap: 12px; }
     .user-avatar-wrapper { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
     .user-mini-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     
-    /* CSS CHẤM TRẠNG THÁI GIỐNG 100% UI DISCORD */
+    /* CSS CHẤM TRẠNG THÁI GIỐNG DISCORD */
     .status-dot {
       position: absolute; bottom: -2px; right: -2px; width: 14px; height: 14px;
       border-radius: 50%; border: 3px solid #141414; box-sizing: content-box;
@@ -79,10 +79,12 @@
     .user-name-row { display: flex; align-items: center; gap: 8px; }
     .user-link-name { font-size: 15px; font-weight: 700; color: #56e368; }
 
+    /* GUILD TAG UI */
     .guild-tag-badge {
-      display: none; align-items: center; gap: 4px;
-      background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; color: #56e368;
+      display: inline-flex; align-items: center;
+      background: rgba(88, 101, 242, 0.25); border: 1px solid rgba(88, 101, 242, 0.5);
+      padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 700;
+      color: #5865f2; text-transform: uppercase;
     }
 
     .user-link-status { 
@@ -92,7 +94,7 @@
     .user-link-status.offline-text { font-style: italic; opacity: 0.8; }
     .status-emoji { width: 16px; height: 16px; object-fit: contain; }
 
-    /* 3. KHUNG LINK MÁY CHỦ DISCORD */
+    /* 3. KHUNG MÁY CHỦ DISCORD */
     .guild-box { align-items: center; justify-content: space-between; gap: 10px; }
     .guild-left { display: flex; align-items: center; gap: 12px; overflow: hidden; }
     .guild-icon { width: 46px; height: 46px; border-radius: 14px; background: #111; object-fit: cover; flex-shrink: 0; }
@@ -146,7 +148,7 @@
         <div class="user-name-row">
           <span id="user-link-name" class="user-link-name">Loading...</span>
           <div id="guild-tag" class="guild-tag-badge">
-            <span id="guild-tag-text"></span>
+            <span id="guild-tag-text">SEL</span>
           </div>
         </div>
         <div id="user-link-status" class="user-link-status">Fetching status...</div>
@@ -178,7 +180,7 @@
 
   <script>
     const DISCORD_USER_ID = "862273858214821929"; 
-    const DISCORD_INVITE_CODE = "XEaC68tVnv"; 
+    const DISCORD_INVITE_CODE = "XEaC68tVnv"; // Đã cập nhật Mã Invite Server mới
     
     const GITHUB_USER = "DNHA05";
     const GITHUB_REPO = "API-Docs";
@@ -186,7 +188,7 @@
     let offlineTimestamp = null;
     let timerInterval = null;
 
-    // 1. PHÁT NHẠC GITHUB TỰ ĐỘNG
+    // 1. TẢI NHẠC GITHUB
     async function initMusic() {
       try {
         const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/audio`);
@@ -197,10 +199,10 @@
             document.getElementById('audio-player').src = `./audio/${encodeURIComponent(mp3Files[0].name)}`;
           }
         }
-      } catch (err) { console.error("Lỗi tải nhạc:", err); }
+      } catch (err) { console.error("Lỗi nhạc:", err); }
     }
 
-    // 2. ĐẾM THỜI GIAN OFFLINE CỘNG DỒN
+    // 2. TÍNH THỜI GIAN OFFLINE
     function formatLastSeen(ts) {
       if (!ts) return "last seen recently";
       const diffSec = Math.floor((Date.now() - ts) / 1000);
@@ -213,7 +215,7 @@
       return `last seen ${days} day${days > 1 ? 's' : ''} ago`;
     }
 
-    // 3. CẬP NHẬT DỮ LIỆU USER DISCORD (STATUS, AVATAR, EMOJI, LAST SEEN)
+    // 3. TẢI PROFILE DISCORD
     async function updateDiscordData() {
       try {
         const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
@@ -241,17 +243,14 @@
             deco.style.display = 'block';
           }
 
-          // Cập nhật chấm trạng thái UI Discord
           document.getElementById('status-dot').className = `status-dot ${status}`;
 
-          // Guild Tag
-          const guildTagElem = document.getElementById('guild-tag');
+          // Tự cập nhật Guild Tag nếu có Lanyard KV
           if (data.kv && data.kv.guild_tag) {
             document.getElementById('guild-tag-text').innerText = data.kv.guild_tag;
-            guildTagElem.style.display = 'flex';
           }
 
-          // Xử lý status & tính thời gian Offline
+          // Xử lý trạng thái Status & Offline
           const statusElem = document.getElementById('user-link-status');
 
           if (status === 'offline') {
@@ -298,7 +297,7 @@
       } catch (err) { console.error("Lỗi API User:", err); }
     }
 
-    // 4. CẬP NHẬT DỮ LIỆU SERVER DISCORD
+    // 4. TẢI DỮ LIỆU SERVER DISCORD VIA INVITE CODE
     async function updateServerData() {
       try {
         const res = await fetch(`https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`);
