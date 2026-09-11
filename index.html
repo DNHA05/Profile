@@ -22,7 +22,7 @@
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
     }
 
-    /* ĐỊNH DẠNG KHUNG DẠNG LINK BLOCK */
+    /* ĐỊNH DẠNG KHUNG GENERAL */
     .card-box {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -47,10 +47,34 @@
 
     /* 2. KHUNG LINK DISCORD CÁ NHÂN */
     .user-link-box { align-items: center; gap: 12px; }
-    .user-mini-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-    .user-link-info { display: flex; flex-direction: column; gap: 2px; }
-    .user-link-name { font-size: 14px; font-weight: 700; }
-    .user-link-status { font-size: 12px; color: rgba(255, 255, 255, 0.5); font-style: italic; }
+    .user-avatar-wrapper { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
+    .user-mini-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+    
+    .status-dot {
+      position: absolute; bottom: -2px; right: -2px; width: 14px; height: 14px;
+      border-radius: 50%; border: 3px solid #141414; background-color: #747f8d;
+    }
+    .status-dot.online { background-color: #23a55a; }
+    .status-dot.dnd { background-color: #f23f43; }
+    .status-dot.idle { background-color: #f0b232; }
+    .status-dot.offline { background-color: #747f8d; }
+
+    .user-link-info { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+    .user-name-row { display: flex; align-items: center; gap: 8px; }
+    .user-link-name { font-size: 15px; font-weight: 700; color: #56e368; }
+
+    .guild-tag-badge {
+      display: none; align-items: center; gap: 4px;
+      background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; color: #56e368;
+    }
+
+    .user-link-status { 
+      font-size: 13px; color: #56e368; display: flex; align-items: center; gap: 6px; 
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .user-link-status.offline-text { font-style: italic; opacity: 0.8; }
+    .status-emoji { width: 16px; height: 16px; object-fit: contain; }
 
     /* 3. KHUNG LINK MÁY CHỦ DISCORD */
     .guild-box { align-items: center; justify-content: space-between; gap: 10px; }
@@ -67,7 +91,6 @@
     }
     .join-btn:hover { background: #1f924e; }
 
-    /* VIEW COUNT FOOTER */
     .view-count { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255, 255, 255, 0.7); font-weight: 600; padding: 2px 6px; }
   </style>
 </head>
@@ -77,7 +100,7 @@
 
   <div class="bio-container">
     
-    <!-- KHUNG HEADER PROFILE -->
+    <!-- HEADER PROFILE -->
     <div class="card-box profile-top">
       <div class="avatar-wrapper">
         <img id="avatar-deco" class="avatar-deco" style="display:none;" alt="Decoration">
@@ -96,16 +119,25 @@
       </div>
     </div>
 
-    <!-- KHUNG TRÊN: LINK DISCORD CÁ NHÂN -->
+    <!-- KHUNG TRÊN: DISCORD CÁ NHÂN -->
     <a id="discord-user-link" href="https://discord.com/users/862273858214821929" target="_blank" class="card-box user-link-box">
-      <img id="mini-avatar" class="user-mini-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Mini Avatar">
+      <div class="user-avatar-wrapper">
+        <img id="mini-avatar" class="user-mini-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Mini Avatar">
+        <div id="status-dot" class="status-dot offline"></div>
+      </div>
+      
       <div class="user-link-info">
-        <div id="user-link-name" class="user-link-name">Loading...</div>
+        <div class="user-name-row">
+          <span id="user-link-name" class="user-link-name">Loading...</span>
+          <div id="guild-tag" class="guild-tag-badge">
+            <span id="guild-tag-text"></span>
+          </div>
+        </div>
         <div id="user-link-status" class="user-link-status">Fetching status...</div>
       </div>
     </a>
 
-    <!-- KHUNG DƯỚI: LINK MÁY CHỦ DISCORD (TỰ KÉO LOGO + TÊN + ONLINE + TỔNG MEMBER) -->
+    <!-- KHUNG DƯỚI: SERVER DISCORD -->
     <a id="guild-link" href="#" target="_blank" class="card-box guild-box">
       <div class="guild-left">
         <img id="guild-icon" class="guild-icon" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="Server Icon">
@@ -120,7 +152,7 @@
       <div class="join-btn">Join</div>
     </a>
 
-    <!-- LƯỢT XEM -->
+    <!-- VIEW COUNT -->
     <div class="view-count">
       <i class="fa-regular fa-eye"></i>
       <span>3,152</span>
@@ -130,14 +162,15 @@
 
   <script>
     const DISCORD_USER_ID = "862273858214821929"; 
-    
-    // CHỈ CẦN THAY CODE MỜI CỦA SERVER VÀO ĐÂY (VD: link discord.gg/S3LFVLS -> điền "S3LFVLS")
-    const DISCORD_INVITE_CODE = "XEaC68tVnv"; 
+    const DISCORD_INVITE_CODE = "XEaC68tVnv"; // Điền mã invite server tại đây (Vd: discord.gg/abc -> điền "abc")
     
     const GITHUB_USER = "DNHA05";
     const GITHUB_REPO = "API-Docs";
 
-    // 1. PHÁT NHẠC TỰ ĐỘNG TỪ GITHUB
+    let offlineTimestamp = null;
+    let timerInterval = null;
+
+    // PHÁT NHẠC GITHUB
     async function initMusic() {
       try {
         const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/audio`);
@@ -145,24 +178,35 @@
         if (Array.isArray(files) && files.length > 0) {
           const mp3Files = files.filter(f => f.name.endsWith('.mp3'));
           if (mp3Files.length > 0) {
-            const audio = document.getElementById('audio-player');
-            audio.src = `./audio/${encodeURIComponent(mp3Files[0].name)}`;
+            document.getElementById('audio-player').src = `./audio/${encodeURIComponent(mp3Files[0].name)}`;
           }
         }
-      } catch (err) {
-        console.error("Lỗi tải nhạc:", err);
-      }
+      } catch (err) { console.error("Lỗi nhạc:", err); }
     }
 
-    // 2. TẢI DỮ LIỆU DISCORD CÁ NHÂN
+    // ĐẾM THỜI GIAN OFFLINE
+    function formatLastSeen(ts) {
+      if (!ts) return "last seen recently";
+      const diffSec = Math.floor((Date.now() - ts) / 1000);
+      if (diffSec < 60) return "last seen just now";
+      const mins = Math.floor(diffSec / 60);
+      if (mins < 60) return `last seen ${mins} minute${mins > 1 ? 's' : ''} ago`;
+      const hours = Math.floor(mins / 60);
+      if (hours < 24) return `last seen ${hours} hour${hours > 1 ? 's' : ''} ago`;
+      const days = Math.floor(hours / 24);
+      return `last seen ${days} day${days > 1 ? 's' : ''} ago`;
+    }
+
+    // TẢI USER DISCORD
     async function updateDiscordData() {
       try {
         const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
         const result = await res.json();
 
         if (result.success && result.data) {
-          const user = result.data.discord_user;
-          const status = result.data.discord_status;
+          const data = result.data;
+          const user = data.discord_user;
+          const status = data.discord_status;
           const name = user.global_name || user.username;
 
           document.getElementById('display-name').innerText = name;
@@ -181,48 +225,69 @@
             deco.style.display = 'block';
           }
 
+          document.getElementById('status-dot').className = `status-dot ${status}`;
+
+          // GUILD TAG
+          const guildTagElem = document.getElementById('guild-tag');
+          if (data.kv && data.kv.guild_tag) {
+            document.getElementById('guild-tag-text').innerText = data.kv.guild_tag;
+            guildTagElem.style.display = 'flex';
+          }
+
+          // STATUS HÃY CỘNG DỒN TIẾN TRÌNH OFFLINE
           const statusElem = document.getElementById('user-link-status');
-          if (status === 'online') statusElem.innerText = 'Online now';
-          else if (status === 'dnd') statusElem.innerText = 'Do Not Disturb';
-          else if (status === 'idle') statusElem.innerText = 'Idle';
-          else statusElem.innerText = 'last seen recently';
+          if (status === 'offline') {
+            statusElem.classList.add('offline-text');
+            if (!offlineTimestamp) offlineTimestamp = data.kv?.offline_since ? parseInt(data.kv.offline_since) : Date.now();
+            if (timerInterval) clearInterval(timerInterval);
+            statusElem.innerText = formatLastSeen(offlineTimestamp);
+            timerInterval = setInterval(() => { statusElem.innerText = formatLastSeen(offlineTimestamp); }, 10000);
+          } else {
+            statusElem.classList.remove('offline-text');
+            offlineTimestamp = null;
+            if (timerInterval) clearInterval(timerInterval);
+
+            const customActivity = data.activities?.find(a => a.type === 4);
+            if (customActivity) {
+              let statusHTML = '';
+              if (customActivity.emoji) {
+                if (customActivity.emoji.id) {
+                  const ext = customActivity.emoji.animated ? 'gif' : 'png';
+                  statusHTML += `<img class="status-emoji" src="https://cdn.discordapp.com/emojis/${customActivity.emoji.id}.${ext}"> `;
+                } else { statusHTML += `${customActivity.emoji.name} `; }
+              }
+              if (customActivity.state) statusHTML += customActivity.state;
+              statusElem.innerHTML = statusHTML || 'Online now';
+            } else {
+              statusElem.innerText = status === 'dnd' ? 'Do Not Disturb' : (status === 'idle' ? 'Idle' : 'Online now');
+            }
+          }
         }
-      } catch (err) {
-        console.error("Lỗi API Discord User:", err);
-      }
+      } catch (err) { console.error("Lỗi API User:", err); }
     }
 
-    // 3. TỰ KÉO CẢ LOGO, TÊN, ONLINE, TỔNG THÀNH VIÊN TỪ LINK INVITE
+    // TẢI SERVER DISCORD
     async function updateServerData() {
       try {
         const res = await fetch(`https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`);
         const data = await res.json();
-
         if (data && data.guild) {
-          // Gán link mời
           document.getElementById('guild-link').href = `https://discord.gg/${DISCORD_INVITE_CODE}`;
-          
-          // Gán tên server
           document.getElementById('guild-name').innerText = data.guild.name;
-          
-          // Gán số lượng thành viên online & tổng
           document.getElementById('guild-online').innerText = data.approximate_presence_count.toLocaleString();
           document.getElementById('guild-members').innerText = data.approximate_member_count.toLocaleString();
-
-          // Gán logo server
           if (data.guild.icon) {
             const ext = data.guild.icon.startsWith('a_') ? 'gif' : 'png';
             document.getElementById('guild-icon').src = `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.${ext}?size=128`;
           }
         }
-      } catch (err) {
-        console.error("Lỗi lấy dữ liệu Server:", err);
-      }
+      } catch (err) { console.error("Lỗi API Server:", err); }
     }
 
     initMusic();
     updateDiscordData();
     updateServerData();
+    setInterval(updateDiscordData, 30000);
   </script>
 </body>
 </html>
