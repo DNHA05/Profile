@@ -55,10 +55,11 @@
     /* 3. KHUNG LINK MÁY CHỦ DISCORD */
     .guild-box { align-items: center; justify-content: space-between; gap: 10px; }
     .guild-left { display: flex; align-items: center; gap: 12px; overflow: hidden; }
-    .guild-icon { width: 46px; height: 46px; border-radius: 14px; background: #000; object-fit: cover; flex-shrink: 0; }
+    .guild-icon { width: 46px; height: 46px; border-radius: 14px; background: #111; object-fit: cover; flex-shrink: 0; }
     .guild-name { font-size: 14px; font-weight: 800; }
     .guild-stats { font-size: 11px; color: rgba(255, 255, 255, 0.6); display: flex; align-items: center; gap: 8px; margin-top: 3px; }
     .dot-online { width: 6px; height: 6px; background: #23a55a; border-radius: 50%; display: inline-block; }
+    .dot-member { width: 6px; height: 6px; background: rgba(255, 255, 255, 0.4); border-radius: 50%; display: inline-block; }
 
     .join-btn {
       background: #23a55a; color: #fff; text-decoration: none; font-size: 12px; font-weight: 700;
@@ -104,15 +105,15 @@
       </div>
     </a>
 
-    <!-- KHUNG DƯỚI: LINK MÁY CHỦ DISCORD (TỰ ĐỘNG LẤY TÊN VÀ MEMBER ONLINE) -->
-    <a id="guild-link" href="https://discord.gg/your-invite-code" target="_blank" class="card-box guild-box">
+    <!-- KHUNG DƯỚI: LINK MÁY CHỦ DISCORD (TỰ KÉO LOGO + TÊN + ONLINE + TỔNG MEMBER) -->
+    <a id="guild-link" href="#" target="_blank" class="card-box guild-box">
       <div class="guild-left">
-        <!-- Đường dẫn ảnh logo server tùy chọn -->
         <img id="guild-icon" class="guild-icon" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="Server Icon">
         <div>
           <div id="guild-name" class="guild-name">Loading Server...</div>
           <div class="guild-stats">
             <span><span class="dot-online"></span> <span id="guild-online">0</span> Online</span>
+            <span><span class="dot-member"></span> <span id="guild-members">0</span> Members</span>
           </div>
         </div>
       </div>
@@ -129,11 +130,14 @@
 
   <script>
     const DISCORD_USER_ID = "862273858214821929"; 
-    const DISCORD_SERVER_ID = "1195301221251170304"; // THAY SERVER ID DISCORD CỦA BẠN VÀO ĐÂY
+    
+    // CHỈ CẦN THAY CODE MỜI CỦA SERVER VÀO ĐÂY (VD: link discord.gg/S3LFVLS -> điền "S3LFVLS")
+    const DISCORD_INVITE_CODE = "XEaC68tVnv"; 
+    
     const GITHUB_USER = "DNHA05";
     const GITHUB_REPO = "API-Docs";
 
-    // 1. PHÁT NHẠC TỰ ĐỘNG TỪ FOLDER GITHUB
+    // 1. PHÁT NHẠC TỰ ĐỘNG TỪ GITHUB
     async function initMusic() {
       try {
         const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/audio`);
@@ -150,7 +154,7 @@
       }
     }
 
-    // 2. TẢI DỮ LIỆU DISCORD CÁ NHÂN (AVATAR, TÊN, TRẠNG THÁI)
+    // 2. TẢI DỮ LIỆU DISCORD CÁ NHÂN
     async function updateDiscordData() {
       try {
         const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
@@ -188,21 +192,31 @@
       }
     }
 
-    // 3. TỰ ĐỘNG LẤY THÔNG TIN SERVER DISCORD TỪ SERVER ID WIDGET
+    // 3. TỰ KÉO CẢ LOGO, TÊN, ONLINE, TỔNG THÀNH VIÊN TỪ LINK INVITE
     async function updateServerData() {
       try {
-        const res = await fetch(`https://discord.com/api/guilds/${DISCORD_SERVER_ID}/widget.json`);
+        const res = await fetch(`https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`);
         const data = await res.json();
 
-        if (data && data.name) {
-          document.getElementById('guild-name').innerText = data.name;
-          document.getElementById('guild-online').innerText = data.presence_count || 0;
-          if (data.instant_invite) {
-            document.getElementById('guild-link').href = data.instant_invite;
+        if (data && data.guild) {
+          // Gán link mời
+          document.getElementById('guild-link').href = `https://discord.gg/${DISCORD_INVITE_CODE}`;
+          
+          // Gán tên server
+          document.getElementById('guild-name').innerText = data.guild.name;
+          
+          // Gán số lượng thành viên online & tổng
+          document.getElementById('guild-online').innerText = data.approximate_presence_count.toLocaleString();
+          document.getElementById('guild-members').innerText = data.approximate_member_count.toLocaleString();
+
+          // Gán logo server
+          if (data.guild.icon) {
+            const ext = data.guild.icon.startsWith('a_') ? 'gif' : 'png';
+            document.getElementById('guild-icon').src = `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.${ext}?size=128`;
           }
         }
       } catch (err) {
-        console.error("Lỗi lấy dữ liệu Server Discord:", err);
+        console.error("Lỗi lấy dữ liệu Server:", err);
       }
     }
 
