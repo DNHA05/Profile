@@ -3,12 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>guns.lol Bio</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  >
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    
-    html, body {
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html,
+    body {
       width: 100%;
       min-height: 100vh;
       margin: 0;
@@ -16,21 +29,29 @@
       overflow-x: hidden;
     }
 
-    /* MÀN HÌNH CHÀO (ENTER + MUSIC WILL PLAY) */
+    /* =========================
+       SPLASH SCREEN
+       ========================= */
+
     #splash-screen {
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100vw;
       height: 100vh;
-      background-color: #0b0b0b;
+
+      background: #0b0b0b;
+
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+
       z-index: 9999;
       cursor: pointer;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
+
+      transition:
+        opacity 0.6s ease,
+        visibility 0.6s ease;
     }
 
     #splash-screen.hidden {
@@ -49,543 +70,1999 @@
     .splash-title {
       font-size: 28px;
       font-weight: 600;
-      color: #ffffff;
-      letter-spacing: 0.5px;
+      color: #fff;
     }
 
     .splash-subtitle {
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.5);
-      font-weight: 400;
+      color: rgba(255,255,255,.5);
     }
 
-    /* HIỆU ỨNG CHỮ BAY KHI NHẤP CHUỘT */
+    /* =========================
+       CLICK EFFECT
+       ========================= */
+
     .click-text-effect {
       position: fixed;
+
       font-size: 14px;
       font-weight: 700;
+
       color: #56e368;
-      text-shadow: 0 0 8px rgba(86, 227, 104, 0.6);
+
+      text-shadow:
+        0 0 8px rgba(86,227,104,.6);
+
       pointer-events: none;
       user-select: none;
+
       z-index: 10000;
-      animation: floatUpFade 0.8s ease-out forwards;
+
+      animation: floatUpFade .8s ease-out forwards;
     }
 
     @keyframes floatUpFade {
       0% {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(0.8);
+        transform:
+          translate(-50%,-50%)
+          scale(.8);
       }
+
       100% {
         opacity: 0;
-        transform: translate(-50%, -120%) scale(1.2);
+        transform:
+          translate(-50%,-120%)
+          scale(1.2);
       }
     }
 
-    /* VIDEO BACKGROUND CHẠY FULL, LẶP LẠI VÀ KHÔNG BAO GIỜ BỊ ĐỨNG HÌNH */
+    /* =========================
+       VIDEO BACKGROUND
+       ========================= */
+
     #bg-video {
       position: fixed;
-      top: 0;
-      left: 0;
+
+      inset: 0;
+
       width: 100vw;
       height: 100vh;
+
       object-fit: cover;
+
       z-index: -2;
     }
 
-    /* LỚP PHỦ TỐI MỜ CHO NỀN VIDEO */
     body::before {
       content: "";
+
       position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.4);
+
+      inset: 0;
+
+      width: 100vw;
+      height: 100vh;
+
+      background: rgba(0,0,0,.4);
+
       z-index: -1;
+
       pointer-events: none;
     }
 
     body {
       background: #0b0b0b;
-      color: #ffffff; 
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
+      color: #fff;
+
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
       padding: 20px;
+
+      min-height: 100vh;
     }
+
+    /* =========================
+       MAIN CONTAINER
+       ========================= */
 
     .bio-container {
-      width: 100%; 
-      max-width: 420px;
-      background: rgba(20, 20, 20, 0.5);
-      backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 28px; 
-      padding: 20px; 
-      display: flex; 
-      flex-direction: column; 
+      width: 100%;
+      max-width: 720px;
+
+      background: rgba(20,20,20,.5);
+
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+
+      border:
+        1px solid rgba(255,255,255,.12);
+
+      border-radius: 28px;
+
+      padding: 20px;
+
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
       gap: 12px;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+
+      box-shadow:
+        0 30px 60px rgba(0,0,0,.8);
     }
+
+    /* =========================
+       CARD
+       ========================= */
 
     .card-box {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px; padding: 14px;
-      color: #ffffff; text-decoration: none;
-      display: flex; transition: background 0.2s, transform 0.2s;
+      background:
+        rgba(255,255,255,.05);
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      border-radius: 20px;
+
+      padding: 14px;
+
+      color: #fff;
+
+      text-decoration: none;
+
+      display: flex;
+
+      transition:
+        background .2s,
+        transform .2s;
     }
+
     .card-box:hover {
-      background: rgba(255, 255, 255, 0.09);
-      transform: translateY(-2px);
+      background:
+        rgba(255,255,255,.09);
+
+      transform:
+        translateY(-2px);
     }
 
-    /* 1. HEADER PROFILE */
-    .profile-top { display: flex; align-items: center; gap: 14px; }
-    .avatar-wrapper { position: relative; width: 75px; height: 75px; flex-shrink: 0; }
-    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-    .avatar-deco { position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; pointer-events: none; }
-    
-    .display-name { 
-      font-size: 22px; 
-      font-weight: 800; 
-      color: #fff; 
+    /* ==================================================
+       PROFILE TOP
+       
+       ĐÃ BỎ KHUNG / BO VIỀN / NỀN
+       ================================================== */
+
+    .profile-top {
+      grid-column: 1 / -1;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 14px;
+
+      /* BỎ KHUNG */
+      background: transparent !important;
+
+      border: none !important;
+
+      border-radius: 0 !important;
+
+      box-shadow: none !important;
+
+      padding: 0 !important;
+
+      transform: none !important;
+    }
+
+    .profile-top:hover {
+      background: transparent !important;
+
+      transform: none !important;
+    }
+
+    /* =========================
+       AVATAR
+       ========================= */
+
+    .avatar-wrapper {
+      position: relative;
+
+      width: 75px;
+      height: 75px;
+
+      flex-shrink: 0;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+
+      border-radius: 50%;
+
+      object-fit: cover;
+    }
+
+    .avatar-deco {
+      position: absolute;
+
+      top: -10%;
+      left: -10%;
+
+      width: 120%;
+      height: 120%;
+
+      pointer-events: none;
+    }
+
+    /* =========================
+       NAME
+       ========================= */
+
+    .display-name {
+      font-size: 22px;
+
+      font-weight: 800;
+
+      color: #fff;
+
       min-height: 28px;
+
       display: flex;
+
       align-items: center;
     }
-    
- .badges-row {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 4px;
 
-  padding: 4px 8px;
-  width: fit-content;
+    /* =========================
+       BADGES
+       ========================= */
 
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-}
+    .badges-row {
+      display: flex;
 
-.badge-icon {
-  width: 16px;
-  height: 16px;
-  object-fit: contain;
-  display: block;
-}
-    
-    .sub-role { 
-      font-size: 13px; 
-      color: rgba(255, 255, 255, 0.7); 
+      align-items: center;
+
+      justify-content: flex-start;
+
+      gap: 3px;
+
+      width: fit-content;
+
+      padding: 3px 7px;
+
+      margin-top: 3px;
+
+      border:
+        1px solid rgba(255,255,255,.22);
+
+      border-radius: 999px;
+
+      background:
+        rgba(255,255,255,.07);
+
+      box-shadow:
+        0 2px 8px rgba(0,0,0,.25);
+    }
+
+    .badge-icon {
+      width: 14px;
+      height: 14px;
+
+      object-fit: contain;
+
+      display: block;
+
+      flex-shrink: 0;
+    }
+
+    /* =========================
+       SUB ROLE
+       ========================= */
+
+    .sub-role {
+      font-size: 13px;
+
+      color:
+        rgba(255,255,255,.7);
+
       font-weight: 500;
+
       min-height: 18px;
+
       display: flex;
+
       align-items: center;
     }
-    
+
     .typing-cursor {
       display: inline-block;
+
       width: 2px;
       height: 16px;
-      background-color: #fff;
+
+      background: #fff;
+
       margin-left: 4px;
-      animation: blink 0.8s infinite;
+
+      animation: blink .8s infinite;
     }
 
     @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
+      0%,100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
     }
 
-    /* 2. DISCORD USER CARD */
-    .user-link-box { align-items: center; gap: 12px; }
-    .user-avatar-wrapper { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
-    .user-mini-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-    
+    /* =========================
+       DISCORD USER
+       ========================= */
+
+    .user-link-box {
+      align-items: center;
+
+      gap: 12px;
+    }
+
+    .user-avatar-wrapper {
+      position: relative;
+
+      width: 44px;
+      height: 44px;
+
+      flex-shrink: 0;
+    }
+
+    .user-mini-avatar {
+      width: 100%;
+      height: 100%;
+
+      border-radius: 50%;
+
+      object-fit: cover;
+    }
+
+    /* =========================
+       STATUS
+       ========================= */
+
     .status-dot {
-      position: absolute; bottom: -2px; right: -2px; width: 14px; height: 14px;
-      border-radius: 50%; border: 3px solid #141414; box-sizing: content-box;
-    }
-    .status-dot.online { background-color: #23a55a; }
-    .status-dot.idle { 
-      background-color: #f0b232; 
-      -webkit-mask: radial-gradient(circle at 30% 30%, transparent 45%, #000 46%);
-      mask: radial-gradient(circle at 30% 30%, transparent 45%, #000 46%);
-    }
-    .status-dot.dnd { background-color: #f23f43; position: absolute; }
-    .status-dot.dnd::after {
-      content: ""; position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%); width: 8px; height: 2px;
-      background-color: #141414; border-radius: 1px;
-    }
-    .status-dot.offline, .status-dot.invisible { 
-      background-color: #80848e; 
-      -webkit-mask: radial-gradient(circle, transparent 35%, #000 36%);
-      mask: radial-gradient(circle, transparent 35%, #000 36%);
+      position: absolute;
+
+      bottom: -2px;
+      right: -2px;
+
+      width: 14px;
+      height: 14px;
+
+      border-radius: 50%;
+
+      border:
+        3px solid #141414;
+
+      box-sizing: content-box;
     }
 
-    .user-link-info { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
-    .user-name-row { display: flex; align-items: center; gap: 8px; }
-    .user-link-name { font-size: 15px; font-weight: 700; color: #56e368; }
+    .status-dot.online {
+      background: #23a55a;
+    }
+
+    .status-dot.idle {
+      background: #f0b232;
+
+      -webkit-mask:
+        radial-gradient(
+          circle at 30% 30%,
+          transparent 45%,
+          #000 46%
+        );
+
+      mask:
+        radial-gradient(
+          circle at 30% 30%,
+          transparent 45%,
+          #000 46%
+        );
+    }
+
+    .status-dot.dnd {
+      background: #f23f43;
+    }
+
+    .status-dot.dnd::after {
+      content: "";
+
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      transform:
+        translate(-50%,-50%);
+
+      width: 8px;
+      height: 2px;
+
+      background: #141414;
+
+      border-radius: 1px;
+    }
+
+    .status-dot.offline,
+    .status-dot.invisible {
+      background: #80848e;
+
+      -webkit-mask:
+        radial-gradient(
+          circle,
+          transparent 35%,
+          #000 36%
+        );
+
+      mask:
+        radial-gradient(
+          circle,
+          transparent 35%,
+          #000 36%
+        );
+    }
+
+    /* =========================
+       USER INFO
+       ========================= */
+
+    .user-link-info {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 4px;
+
+      overflow: hidden;
+    }
+
+    .user-name-row {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      flex-wrap: wrap;
+    }
+
+    .user-link-name {
+      font-size: 15px;
+
+      font-weight: 700;
+
+      color: #56e368;
+    }
 
     .guild-tag-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: 700;
-      color: #ffffff; line-height: 1;
-    }
-    .guild-tag-badge img { width: 14px; height: 14px; object-fit: contain; }
+      display: inline-flex;
 
-    .user-link-status { 
-      font-size: 13px; color: #56e368; display: flex; align-items: center; gap: 6px; 
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .user-link-status.offline-text { font-style: italic; opacity: 0.8; }
-    .status-emoji { width: 16px; height: 16px; object-fit: contain; }
+      align-items: center;
 
-    /* 3. DISCORD SERVER CARD */
-    .guild-box { align-items: center; justify-content: space-between; gap: 10px; }
-    .guild-left { display: flex; align-items: center; gap: 12px; overflow: hidden; }
-    .guild-icon { width: 46px; height: 46px; border-radius: 14px; background: #111; object-fit: cover; flex-shrink: 0; }
-    .guild-name { font-size: 14px; font-weight: 800; }
-    .guild-stats { font-size: 11px; color: rgba(255, 255, 255, 0.6); display: flex; align-items: center; gap: 8px; margin-top: 3px; }
-    .dot-online { width: 6px; height: 6px; background: #23a55a; border-radius: 50%; display: inline-block; }
-    .dot-member { width: 6px; height: 6px; background: rgba(255, 255, 255, 0.4); border-radius: 50%; display: inline-block; }
+      gap: 5px;
+
+      background:
+        rgba(255,255,255,.12);
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      padding: 3px 8px;
+
+      border-radius: 12px;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      color: #fff;
+
+      line-height: 1;
+    }
+
+    .guild-tag-badge img {
+      width: 14px;
+      height: 14px;
+
+      object-fit: contain;
+    }
+
+    .user-link-status {
+      font-size: 13px;
+
+      color: #56e368;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+    .user-link-status.offline-text {
+      font-style: italic;
+
+      opacity: .8;
+    }
+
+    .status-emoji {
+      width: 16px;
+      height: 16px;
+
+      object-fit: contain;
+    }
+
+    /* =========================
+       SERVER
+       ========================= */
+
+    .guild-box {
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 10px;
+    }
+
+    .guild-left {
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      overflow: hidden;
+    }
+
+    .guild-icon {
+      width: 46px;
+      height: 46px;
+
+      border-radius: 14px;
+
+      background: #111;
+
+      object-fit: cover;
+
+      flex-shrink: 0;
+    }
+
+    .guild-name {
+      font-size: 14px;
+
+      font-weight: 800;
+    }
+
+    .guild-stats {
+      font-size: 11px;
+
+      color:
+        rgba(255,255,255,.6);
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      margin-top: 3px;
+    }
+
+    .dot-online {
+      width: 6px;
+      height: 6px;
+
+      background: #23a55a;
+
+      border-radius: 50%;
+
+      display: inline-block;
+    }
+
+    .dot-member {
+      width: 6px;
+      height: 6px;
+
+      background:
+        rgba(255,255,255,.4);
+
+      border-radius: 50%;
+
+      display: inline-block;
+    }
 
     .join-btn {
-      background: #23a55a; color: #fff; text-decoration: none; font-size: 12px; font-weight: 700;
-      padding: 6px 14px; border-radius: 8px; flex-shrink: 0; transition: background 0.2s;
-    }
-    .join-btn:hover { background: #1f924e; }
+      background: #23a55a;
 
-    .view-count { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255, 255, 255, 0.7); font-weight: 600; padding: 2px 6px; }
+      color: #fff;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      padding: 6px 14px;
+
+      border-radius: 8px;
+
+      flex-shrink: 0;
+
+      transition:
+        background .2s;
+    }
+
+    .join-btn:hover {
+      background: #1f924e;
+    }
+
+    /* =========================
+       SOCIAL
+       LUÔN CHÍNH GIỮA
+       ========================= */
+
+    .social-links {
+      grid-column: 1 / -1;
+
+      width: 100%;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 8px;
+
+      margin: 0 auto;
+
+      padding: 2px 0;
+    }
+
+    .social-icon {
+      width: 42px;
+      height: 42px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background:
+        rgba(255,255,255,.06);
+
+      border:
+        1px solid rgba(255,255,255,.15);
+
+      border-radius: 12px;
+
+      text-decoration: none;
+
+      transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease;
+    }
+
+    .social-icon img {
+      width: 25px;
+      height: 25px;
+
+      object-fit: contain;
+
+      display: block;
+    }
+
+    .social-icon:hover {
+      transform:
+        translateY(-3px);
+
+      background:
+        rgba(255,255,255,.12);
+
+      border-color:
+        rgba(255,255,255,.3);
+    }
+
+    /* =========================
+       VIEW COUNT
+       ========================= */
+
+    .view-count {
+      grid-column: 1 / -1;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 6px;
+
+      font-size: 12px;
+
+      color:
+        rgba(255,255,255,.7);
+
+      font-weight: 600;
+
+      padding: 2px 6px;
+    }
+
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @media (max-width: 768px) {
+
+      body {
+        padding: 12px;
+      }
+
+      .bio-container {
+        max-width: 420px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 12px;
+
+        padding: 16px;
+      }
+
+      /* PROFILE VẪN KHÔNG CÓ KHUNG */
+
+      .profile-top {
+        background: transparent !important;
+
+        border: none !important;
+
+        border-radius: 0 !important;
+
+        padding: 0 !important;
+
+        box-shadow: none !important;
+      }
+
+      .avatar-wrapper {
+        width: 65px;
+        height: 65px;
+      }
+
+      .display-name {
+        font-size: 20px;
+      }
+
+      .social-links {
+        width: 100%;
+
+        justify-content: center;
+
+        gap: 6px;
+      }
+
+      .social-icon {
+        width: 38px;
+        height: 38px;
+
+        border-radius: 11px;
+      }
+
+      .social-icon img {
+        width: 22px;
+        height: 22px;
+      }
+
+      .guild-stats {
+        gap: 5px;
+      }
+
+      .join-btn {
+        padding: 6px 10px;
+      }
+    }
+
+    /* =========================
+       SMALL MOBILE
+       ========================= */
+
+    @media (max-width: 380px) {
+
+      .social-links {
+        gap: 4px;
+      }
+
+      .social-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .social-icon img {
+        width: 20px;
+        height: 20px;
+      }
+    }
   </style>
 </head>
+
 <body>
 
-  <!-- MÀN HÌNH CHÀO (ENTER + MUSIC WILL PLAY) -->
-  <div id="splash-screen" onclick="enterSite()">
+  <!-- =========================
+       ENTER
+       ========================= -->
+
+  <div
+    id="splash-screen"
+    onclick="enterSite()"
+  >
+
     <div class="splash-content">
-      <div class="splash-title">Enter</div>
-      <div class="splash-subtitle">Music will play</div>
+
+      <div class="splash-title">
+        Enter
+      </div>
+
+      <div class="splash-subtitle">
+        Music will play
+      </div>
+
     </div>
+
   </div>
 
-  <!-- VIDEO NỀN -->
-  <video autoplay muted loop playsinline id="bg-video">
-    <source src="./carx-edited_by_cut3.mp4" type="video/mp4">
+
+  <!-- =========================
+       VIDEO
+       ========================= -->
+
+  <video
+    autoplay
+    muted
+    loop
+    playsinline
+    id="bg-video"
+  >
+
+    <source
+      src="./carx-edited_by_cut3.mp4"
+      type="video/mp4"
+    >
+
   </video>
 
-  <!-- NHẠC NỀN AUDIO CHẠY NGẦM -->
-  <audio id="bg-audio" loop preload="auto">
-    <source src="./nhac.mp3" type="audio/mp3">
+
+  <!-- =========================
+       AUDIO
+       ========================= -->
+
+  <audio
+    id="bg-audio"
+    loop
+    preload="auto"
+  >
+
+    <source
+      src="./nhac.mp3"
+      type="audio/mp3"
+    >
+
   </audio>
 
-  <div class="bio-container">
-    
-    <!-- HEADER PROFILE -->
-    <div class="card-box profile-top">
-      <div class="avatar-wrapper">
-        <img id="avatar-deco" class="avatar-deco" style="display:none;" alt="Decoration">
-        <img id="discord-avatar" class="avatar-img" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
-      </div>
-      <div>
-        <!-- DÒNG TRÊN: HIỆU ỨNG GÕ CHỮ CHO TÊN CHÍNH -->
-       <div class="display-name">
-  <span id="typed-name"></span><span class="typing-cursor"></span>
-</div>
 
-<div class="badges-row">
-  <img src="https://cdn3.emoji.gg/emojis/994619-ola.gif" class="badge-icon">
-  <img src="https://cdn3.emoji.gg/emojis/994619-ola.gif" class="badge-icon">
-  <img src="https://cdn3.emoji.gg/emojis/994619-ola.gif" class="badge-icon">
-  <img src="https://cdn3.emoji.gg/emojis/994619-ola.gif" class="badge-icon">
-  <img src="https://cdn3.emoji.gg/emojis/994619-ola.gif" class="badge-icon">
-</div>
-        <!-- DÒNG DƯỚI: HIỆU ỨNG GÕ CHỮ CHO SUB-ROLE KHÁC NHAU -->
-        <div class="sub-role">
-          <span id="typed-role"></span>
-        </div>
+  <!-- =========================
+       BIO CONTAINER
+       ========================= -->
+
+  <div class="bio-container">
+
+    <!-- =========================
+         PROFILE
+         KHÔNG CÒN KHUNG
+         ========================= -->
+
+    <div class="card-box profile-top">
+
+      <div class="avatar-wrapper">
+
+        <img
+          id="avatar-deco"
+          class="avatar-deco"
+          style="display:none;"
+          alt="Decoration"
+        >
+
+        <img
+          id="discord-avatar"
+          class="avatar-img"
+          src="https://cdn.discordapp.com/embed/avatars/0.png"
+          alt="Avatar"
+        >
+
       </div>
+
+
+      <div>
+
+        <div class="display-name">
+
+          <span id="typed-name"></span>
+
+          <span class="typing-cursor"></span>
+
+        </div>
+
+
+        <!-- EMOJI CHUNG 1 KHUNG -->
+
+        <div class="badges-row">
+
+          <img
+            src="https://cdn3.emoji.gg/emojis/994619-ola.gif"
+            class="badge-icon"
+            alt="badge"
+          >
+
+          <img
+            src="https://cdn3.emoji.gg/emojis/994619-ola.gif"
+            class="badge-icon"
+            alt="badge"
+          >
+
+          <img
+            src="https://cdn3.emoji.gg/emojis/994619-ola.gif"
+            class="badge-icon"
+            alt="badge"
+          >
+
+          <img
+            src="https://cdn3.emoji.gg/emojis/994619-ola.gif"
+            class="badge-icon"
+            alt="badge"
+          >
+
+          <img
+            src="https://cdn3.emoji.gg/emojis/994619-ola.gif"
+            class="badge-icon"
+            alt="badge"
+          >
+
+        </div>
+
+
+        <div class="sub-role">
+
+          <span id="typed-role"></span>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <!-- KHUNG DISCORD CÁ NHÂN -->
-    <a id="discord-user-link" href="https://discord.com/users/862273858214821929" target="_blank" class="card-box user-link-box">
+
+    <!-- =========================
+         DISCORD USER
+         ========================= -->
+
+    <a
+      id="discord-user-link"
+      href="https://discord.com/users/862273858214821929"
+      target="_blank"
+      class="card-box user-link-box"
+    >
+
       <div class="user-avatar-wrapper">
-        <img id="mini-avatar" class="user-mini-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Mini Avatar">
-        <div id="status-dot" class="status-dot offline"></div>
+
+        <img
+          id="mini-avatar"
+          class="user-mini-avatar"
+          src="https://cdn.discordapp.com/embed/avatars/0.png"
+          alt="Mini Avatar"
+        >
+
+        <div
+          id="status-dot"
+          class="status-dot offline"
+        ></div>
+
       </div>
-      
+
+
       <div class="user-link-info">
+
         <div class="user-name-row">
-          <span id="user-link-name" class="user-link-name">Loading...</span>
+
+          <span
+            id="user-link-name"
+            class="user-link-name"
+          >
+            Loading...
+          </span>
+
+
           <div class="guild-tag-badge">
-            <img src="https://cdn3.emoji.gg/emojis/68950-purple-heart.gif" alt="badge">
-            <span>OwO</span>
+
+            <img
+              src="https://cdn3.emoji.gg/emojis/68950-purple-heart.gif"
+              alt="badge"
+            >
+
+            <span>
+              OwO
+            </span>
+
           </div>
+
         </div>
-        <div id="user-link-status" class="user-link-status">Fetching status...</div>
+
+
+        <div
+          id="user-link-status"
+          class="user-link-status"
+        >
+          Fetching status...
+        </div>
+
       </div>
+
     </a>
 
-    <!-- KHUNG MÁY CHỦ DISCORD -->
-    <a id="guild-link" href="#" target="_blank" class="card-box guild-box">
+
+    <!-- =========================
+         DISCORD SERVER
+         ========================= -->
+
+    <a
+      id="guild-link"
+      href="#"
+      target="_blank"
+      class="card-box guild-box"
+    >
+
       <div class="guild-left">
-        <img id="guild-icon" class="guild-icon" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="Server Icon">
+
+        <img
+          id="guild-icon"
+          class="guild-icon"
+          src="https://cdn.discordapp.com/embed/avatars/1.png"
+          alt="Server Icon"
+        >
+
         <div>
-          <div id="guild-name" class="guild-name">Loading Server...</div>
-          <div class="guild-stats">
-            <span><span class="dot-online"></span> <span id="guild-online">0</span> Online</span>
-            <span><span class="dot-member"></span> <span id="guild-members">0</span> Members</span>
+
+          <div
+            id="guild-name"
+            class="guild-name"
+          >
+            Loading Server...
           </div>
+
+
+          <div class="guild-stats">
+
+            <span>
+
+              <span class="dot-online"></span>
+
+              <span id="guild-online">
+                0
+              </span>
+
+              Online
+
+            </span>
+
+
+            <span>
+
+              <span class="dot-member"></span>
+
+              <span id="guild-members">
+                0
+              </span>
+
+              Members
+
+            </span>
+
+          </div>
+
         </div>
+
       </div>
-      <div class="join-btn">Join</div>
+
+
+      <div class="join-btn">
+        Join
+      </div>
+
     </a>
 
-    <!-- VIEW COUNT -->
+
+    <!-- =========================
+         SOCIAL ICONS
+         ========================= -->
+
+    <div class="social-links">
+
+      <a
+        href="#"
+        target="_blank"
+        class="social-icon"
+      >
+
+        <img
+          src="https://cdn3.emoji.gg/emojis/994619-ola.gif"
+          alt="Facebook"
+        >
+
+      </a>
+
+
+      <a
+        href="#"
+        target="_blank"
+        class="social-icon"
+      >
+
+        <img
+          src="https://cdn3.emoji.gg/emojis/994619-ola.gif"
+          alt="Discord"
+        >
+
+      </a>
+
+
+      <a
+        href="#"
+        target="_blank"
+        class="social-icon"
+      >
+
+        <img
+          src="https://cdn3.emoji.gg/emojis/994619-ola.gif"
+          alt="TikTok"
+        >
+
+      </a>
+
+
+      <a
+        href="#"
+        target="_blank"
+        class="social-icon"
+      >
+
+        <img
+          src="https://cdn3.emoji.gg/emojis/994619-ola.gif"
+          alt="Steam"
+        >
+
+      </a>
+
+
+      <a
+        href="#"
+        target="_blank"
+        class="social-icon"
+      >
+
+        <img
+          src="https://cdn3.emoji.gg/emojis/994619-ola.gif"
+          alt="Roblox"
+        >
+
+      </a>
+
+    </div>
+
+
+    <!-- VIEW -->
+
     <div class="view-count">
+
       <i class="fa-regular fa-eye"></i>
-      <span>3,152</span>
+
+      <span>
+        3,152
+      </span>
+
     </div>
 
   </div>
 
+
   <script>
-    const DISCORD_USER_ID = "862273858214821929"; 
-    const DISCORD_INVITE_CODE = "XEaC68tVnv"; 
+
+    const DISCORD_USER_ID =
+      "862273858214821929";
+
+    const DISCORD_INVITE_CODE =
+      "XEaC68tVnv";
 
     let offlineTimestamp = null;
     let timerInterval = null;
 
-    // HÀM KHI NHẤN VÀO MÀN HÌNH "ENTER"
+
+    /* ENTER */
+
     function enterSite() {
-      const splash = document.getElementById('splash-screen');
-      const bgAudio = document.getElementById('bg-audio');
-      const video = document.getElementById('bg-video');
+
+      const splash =
+        document.getElementById(
+          "splash-screen"
+        );
+
+      const bgAudio =
+        document.getElementById(
+          "bg-audio"
+        );
+
+      const video =
+        document.getElementById(
+          "bg-video"
+        );
+
 
       if (splash) {
-        splash.classList.add('hidden');
+
+        splash.classList.add(
+          "hidden"
+        );
+
       }
+
 
       if (bgAudio) {
-        bgAudio.play().catch(err => console.log("Không phát được nhạc:", err));
+
+        bgAudio
+          .play()
+          .catch(err =>
+            console.log(
+              "Không phát được nhạc:",
+              err
+            )
+          );
+
       }
+
 
       if (video) {
-        video.play().catch(err => console.log("Không phát được video:", err));
+
+        video
+          .play()
+          .catch(err =>
+            console.log(
+              "Không phát được video:",
+              err
+            )
+          );
+
       }
+
     }
 
-    // TÍNH NĂNG HIỆN BIỂN CHỮ KHI NHẤP CHUỘT / CHẠM MÀN HÌNH
-    const clickPhrases = ["Hanh Lẻ Năm", "Dev", "Hello!", "OwO", "Click!", "Code Website"];
-    
-    window.addEventListener('click', (e) => {
-      // Tránh hiện chữ đè lên nút Enter lúc đầu nếu chưa bấm
-      const splash = document.getElementById('splash-screen');
-      if (splash && !splash.classList.contains('hidden')) return;
 
-      createFloatingText(e.clientX, e.clientY);
-    });
+    /* CLICK TEXT */
 
-    function createFloatingText(x, y) {
-      const el = document.createElement('div');
-      el.className = 'click-text-effect';
-      
-      // Chọn ngẫu nhiên một từ trong danh sách
-      const randomText = clickPhrases[Math.floor(Math.random() * clickPhrases.length)];
-      el.innerText = randomText;
+    const clickPhrases = [
+      "Hanh Lẻ Năm",
+      "Dev",
+      "Hello!",
+      "OwO",
+      "Click!",
+      "Code Website"
+    ];
 
-      // Đặt vị trí xuất hiện đúng chỗ click
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
 
-      document.body.appendChild(el);
+    window.addEventListener(
+      "click",
+      e => {
 
-      // Tự động xóa phần tử sau khi chạy xong animation (0.8s) để không bị nặng RAM
-      setTimeout(() => {
-        el.remove();
-      }, 800);
+        const splash =
+          document.getElementById(
+            "splash-screen"
+          );
+
+
+        if (
+          splash &&
+          !splash.classList.contains(
+            "hidden"
+          )
+        ) {
+          return;
+        }
+
+
+        createFloatingText(
+          e.clientX,
+          e.clientY
+        );
+
+      }
+    );
+
+
+    function createFloatingText(x,y) {
+
+      const el =
+        document.createElement(
+          "div"
+        );
+
+
+      el.className =
+        "click-text-effect";
+
+
+      const randomText =
+        clickPhrases[
+          Math.floor(
+            Math.random() *
+            clickPhrases.length
+          )
+        ];
+
+
+      el.innerText =
+        randomText;
+
+
+      el.style.left =
+        `${x}px`;
+
+      el.style.top =
+        `${y}px`;
+
+
+      document.body.appendChild(
+        el
+      );
+
+
+      setTimeout(
+        () => el.remove(),
+        800
+      );
+
     }
 
-    // 1. HIỆU ỨNG GÕ CHỮ CHO DÒNG TRÊN (Tên chính: Hanh Lẻ Năm)
-    const nameWords = ["Hanh Lẻ Năm"];
+
+    /* NAME */
+
+    const nameWords = [
+      "Hanh Lẻ Năm"
+    ];
+
     let nameWordIndex = 0;
     let nameCharIndex = 0;
     let nameIsDeleting = false;
-    const typedNameSpan = document.getElementById("typed-name");
+
+
+    const typedNameSpan =
+      document.getElementById(
+        "typed-name"
+      );
+
 
     function typeNameEffect() {
-      const currentWord = nameWords[nameWordIndex];
-      
+
+      const currentWord =
+        nameWords[nameWordIndex];
+
+
       if (nameIsDeleting) {
-        typedNameSpan.textContent = currentWord.substring(0, nameCharIndex - 1);
+
+        typedNameSpan.textContent =
+          currentWord.substring(
+            0,
+            nameCharIndex - 1
+          );
+
         nameCharIndex--;
+
       } else {
-        typedNameSpan.textContent = currentWord.substring(0, nameCharIndex + 1);
+
+        typedNameSpan.textContent =
+          currentWord.substring(
+            0,
+            nameCharIndex + 1
+          );
+
         nameCharIndex++;
+
       }
 
-      let typeSpeed = nameIsDeleting ? 70 : 120;
 
-      if (!nameIsDeleting && nameCharIndex === currentWord.length) {
-        typeSpeed = 2000; 
+      let typeSpeed =
+        nameIsDeleting
+          ? 70
+          : 120;
+
+
+      if (
+        !nameIsDeleting &&
+        nameCharIndex ===
+          currentWord.length
+      ) {
+
+        typeSpeed = 2000;
+
         nameIsDeleting = true;
-      } else if (nameIsDeleting && nameCharIndex === 0) {
-        nameIsDeleting = false;
-        nameWordIndex = (nameWordIndex + 1) % nameWords.length;
-        typeSpeed = 500; 
+
       }
 
-      setTimeout(typeNameEffect, typeSpeed);
+
+      else if (
+        nameIsDeleting &&
+        nameCharIndex === 0
+      ) {
+
+        nameIsDeleting = false;
+
+        nameWordIndex =
+          (nameWordIndex + 1) %
+          nameWords.length;
+
+        typeSpeed = 500;
+
+      }
+
+
+      setTimeout(
+        typeNameEffect,
+        typeSpeed
+      );
+
     }
 
-    // 2. HIỆU ỨNG GÕ CHỮ CHO DÒNG DƯỚI (Sub-role)
-    const roleWords = ["Dev", "Code Website", "Welcome to my Bio"];
+
+    /* ROLE */
+
+    const roleWords = [
+      "Dev",
+      "Code Website",
+      "Welcome to my Bio"
+    ];
+
     let roleWordIndex = 0;
     let roleCharIndex = 0;
     let roleIsDeleting = false;
-    const typedRoleSpan = document.getElementById("typed-role");
+
+
+    const typedRoleSpan =
+      document.getElementById(
+        "typed-role"
+      );
+
 
     function typeRoleEffect() {
-      const currentWord = roleWords[roleWordIndex];
-      
+
+      const currentWord =
+        roleWords[roleWordIndex];
+
+
       if (roleIsDeleting) {
-        typedRoleSpan.textContent = currentWord.substring(0, roleCharIndex - 1);
+
+        typedRoleSpan.textContent =
+          currentWord.substring(
+            0,
+            roleCharIndex - 1
+          );
+
         roleCharIndex--;
+
       } else {
-        typedRoleSpan.textContent = currentWord.substring(0, roleCharIndex + 1);
+
+        typedRoleSpan.textContent =
+          currentWord.substring(
+            0,
+            roleCharIndex + 1
+          );
+
         roleCharIndex++;
+
       }
 
-      let typeSpeed = roleIsDeleting ? 50 : 90;
 
-      if (!roleIsDeleting && roleCharIndex === currentWord.length) {
-        typeSpeed = 2000; 
+      let typeSpeed =
+        roleIsDeleting
+          ? 50
+          : 90;
+
+
+      if (
+        !roleIsDeleting &&
+        roleCharIndex ===
+          currentWord.length
+      ) {
+
+        typeSpeed = 2000;
+
         roleIsDeleting = true;
-      } else if (roleIsDeleting && roleCharIndex === 0) {
-        roleIsDeleting = false;
-        roleWordIndex = (roleWordIndex + 1) % roleWords.length;
-        typeSpeed = 400; 
+
       }
 
-      setTimeout(typeRoleEffect, typeSpeed);
+
+      else if (
+        roleIsDeleting &&
+        roleCharIndex === 0
+      ) {
+
+        roleIsDeleting = false;
+
+        roleWordIndex =
+          (roleWordIndex + 1) %
+          roleWords.length;
+
+        typeSpeed = 400;
+
+      }
+
+
+      setTimeout(
+        typeRoleEffect,
+        typeSpeed
+      );
+
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      setTimeout(typeNameEffect, 500);
-      setTimeout(typeRoleEffect, 800);
-    });
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+        setTimeout(
+          typeNameEffect,
+          500
+        );
+
+        setTimeout(
+          typeRoleEffect,
+          800
+        );
+
+      }
+    );
+
+
+    /* LAST SEEN */
 
     function formatLastSeen(ts) {
-      if (!ts) return "last seen recently";
-      const diffSec = Math.floor((Date.now() - ts) / 1000);
-      if (diffSec < 60) return "last seen just now";
-      const mins = Math.floor(diffSec / 60);
-      if (mins < 60) return `last seen ${mins} minute${mins > 1 ? 's' : ''} ago`;
-      const hours = Math.floor(mins / 60);
-      if (hours < 24) return `last seen ${hours} hour${hours > 1 ? 's' : ''} ago`;
-      const days = Math.floor(hours / 24);
-      return `last seen ${days} day${days > 1 ? 's' : ''} ago`;
+
+      if (!ts)
+        return "last seen recently";
+
+
+      const diffSec =
+        Math.floor(
+          (Date.now() - ts) / 1000
+        );
+
+
+      if (diffSec < 60)
+        return "last seen just now";
+
+
+      const mins =
+        Math.floor(diffSec / 60);
+
+
+      if (mins < 60) {
+
+        return `last seen ${mins} minute${
+          mins > 1 ? "s" : ""
+        } ago`;
+
+      }
+
+
+      const hours =
+        Math.floor(mins / 60);
+
+
+      if (hours < 24) {
+
+        return `last seen ${hours} hour${
+          hours > 1 ? "s" : ""
+        } ago`;
+
+      }
+
+
+      const days =
+        Math.floor(hours / 24);
+
+
+      return `last seen ${days} day${
+        days > 1 ? "s" : ""
+      } ago`;
+
     }
+
+
+    /* DISCORD USER */
 
     async function updateDiscordData() {
+
       try {
-        const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
-        const result = await res.json();
 
-        if (result.success && result.data) {
-          const data = result.data;
-          const user = data.discord_user;
-          const status = data.discord_status;
+        const res =
+          await fetch(
+            `https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`
+          );
 
-          document.getElementById('user-link-name').innerText = user.username;
+
+        const result =
+          await res.json();
+
+
+        if (
+          result.success &&
+          result.data
+        ) {
+
+          const data =
+            result.data;
+
+          const user =
+            data.discord_user;
+
+          const status =
+            data.discord_status;
+
+
+          document.getElementById(
+            "user-link-name"
+          ).innerText =
+            user.username;
+
 
           if (user.avatar) {
-            const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
-            const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=256`;
-            document.getElementById('discord-avatar').src = avatarUrl;
-            document.getElementById('mini-avatar').src = avatarUrl;
+
+            const ext =
+              user.avatar.startsWith("a_")
+                ? "gif"
+                : "png";
+
+
+            const avatarUrl =
+              `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=256`;
+
+
+            document.getElementById(
+              "discord-avatar"
+            ).src =
+              avatarUrl;
+
+
+            document.getElementById(
+              "mini-avatar"
+            ).src =
+              avatarUrl;
+
           }
 
-          if (user.avatar_decoration_data) {
-            const deco = document.getElementById('avatar-deco');
-            deco.src = `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png`;
-            deco.style.display = 'block';
+
+          if (
+            user.avatar_decoration_data
+          ) {
+
+            const deco =
+              document.getElementById(
+                "avatar-deco"
+              );
+
+
+            deco.src =
+              `https://cdn.discordapp.com/avatar-decoration-presets/${user.avatar_decoration_data.asset}.png`;
+
+
+            deco.style.display =
+              "block";
+
           }
 
-          document.getElementById('status-dot').className = `status-dot ${status}`;
 
-          const statusElem = document.getElementById('user-link-status');
+          document.getElementById(
+            "status-dot"
+          ).className =
+            `status-dot ${status}`;
 
-          if (status === 'offline') {
-            statusElem.classList.add('offline-text');
 
-            let savedOfflineTime = localStorage.getItem('discord_offline_time');
+          const statusElem =
+            document.getElementById(
+              "user-link-status"
+            );
+
+
+          if (
+            status === "offline"
+          ) {
+
+            statusElem.classList.add(
+              "offline-text"
+            );
+
+
+            let savedOfflineTime =
+              localStorage.getItem(
+                "discord_offline_time"
+              );
+
+
             if (!savedOfflineTime) {
-              savedOfflineTime = Date.now();
-              localStorage.setItem('discord_offline_time', savedOfflineTime);
+
+              savedOfflineTime =
+                Date.now();
+
+
+              localStorage.setItem(
+                "discord_offline_time",
+                savedOfflineTime
+              );
+
             }
 
-            offlineTimestamp = parseInt(savedOfflineTime);
 
-            if (timerInterval) clearInterval(timerInterval);
-            statusElem.innerText = formatLastSeen(offlineTimestamp);
-            timerInterval = setInterval(() => { 
-              statusElem.innerText = formatLastSeen(offlineTimestamp); 
-            }, 10000);
+            offlineTimestamp =
+              parseInt(
+                savedOfflineTime
+              );
+
+
+            if (timerInterval)
+              clearInterval(
+                timerInterval
+              );
+
+
+            statusElem.innerText =
+              formatLastSeen(
+                offlineTimestamp
+              );
+
+
+            timerInterval =
+              setInterval(
+                () => {
+
+                  statusElem.innerText =
+                    formatLastSeen(
+                      offlineTimestamp
+                    );
+
+                },
+                10000
+              );
+
 
           } else {
-            localStorage.removeItem('discord_offline_time');
-            statusElem.classList.remove('offline-text');
+
+            localStorage.removeItem(
+              "discord_offline_time"
+            );
+
+
+            statusElem.classList.remove(
+              "offline-text"
+            );
+
+
             offlineTimestamp = null;
-            if (timerInterval) clearInterval(timerInterval);
 
-            const customActivity = data.activities?.find(a => a.type === 4);
 
-            if (customActivity && (customActivity.state || customActivity.emoji)) {
-              let statusHTML = '';
-              if (customActivity.emoji) {
-                if (customActivity.emoji.id) {
-                  const ext = customActivity.emoji.animated ? 'gif' : 'png';
-                  statusHTML += `<img class="status-emoji" src="https://cdn.discordapp.com/emojis/${customActivity.emoji.id}.${ext}"> `;
-                } else { 
-                  statusHTML += `${customActivity.emoji.name} `; 
+            if (timerInterval)
+              clearInterval(
+                timerInterval
+              );
+
+
+            const customActivity =
+              data.activities?.find(
+                a => a.type === 4
+              );
+
+
+            if (
+              customActivity &&
+              (
+                customActivity.state ||
+                customActivity.emoji
+              )
+            ) {
+
+              let statusHTML = "";
+
+
+              if (
+                customActivity.emoji
+              ) {
+
+                if (
+                  customActivity.emoji.id
+                ) {
+
+                  const ext =
+                    customActivity.emoji.animated
+                      ? "gif"
+                      : "png";
+
+
+                  statusHTML +=
+                    `<img class="status-emoji" src="https://cdn.discordapp.com/emojis/${customActivity.emoji.id}.${ext}">`;
+
+                } else {
+
+                  statusHTML +=
+                    `${customActivity.emoji.name} `;
+
                 }
+
               }
-              if (customActivity.state) statusHTML += customActivity.state;
-              statusElem.innerHTML = statusHTML;
+
+
+              if (
+                customActivity.state
+              ) {
+
+                statusHTML +=
+                  customActivity.state;
+
+              }
+
+
+              statusElem.innerHTML =
+                statusHTML;
+
             } else {
-              const statusTextMap = { 'dnd': 'Do Not Disturb', 'idle': 'Idle', 'online': 'Online now' };
-              statusElem.innerText = statusTextMap[status] || 'Online now';
+
+              const statusTextMap = {
+
+                dnd:
+                  "Do Not Disturb",
+
+                idle:
+                  "Idle",
+
+                online:
+                  "Online now"
+
+              };
+
+
+              statusElem.innerText =
+                statusTextMap[status] ||
+                "Online now";
+
             }
+
           }
+
         }
-      } catch (err) { console.error("Lỗi API User:", err); }
+
+      } catch (err) {
+
+        console.error(
+          "Lỗi API User:",
+          err
+        );
+
+      }
+
     }
+
+
+    /* DISCORD SERVER */
 
     async function updateServerData() {
+
       try {
-        const res = await fetch(`https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`);
-        const data = await res.json();
-        if (data && data.guild) {
-          document.getElementById('guild-link').href = `https://discord.gg/${DISCORD_INVITE_CODE}`;
-          document.getElementById('guild-name').innerText = data.guild.name;
-          document.getElementById('guild-online').innerText = data.approximate_presence_count.toLocaleString();
-          document.getElementById('guild-members').innerText = data.approximate_member_count.toLocaleString();
-          if (data.guild.icon) {
-            const ext = data.guild.icon.startsWith('a_') ? 'gif' : 'png';
-            document.getElementById('guild-icon').src = `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.${ext}?size=128`;
+
+        const res =
+          await fetch(
+            `https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`
+          );
+
+
+        const data =
+          await res.json();
+
+
+        if (
+          data &&
+          data.guild
+        ) {
+
+          document.getElementById(
+            "guild-link"
+          ).href =
+            `https://discord.gg/${DISCORD_INVITE_CODE}`;
+
+
+          document.getElementById(
+            "guild-name"
+          ).innerText =
+            data.guild.name;
+
+
+          document.getElementById(
+            "guild-online"
+          ).innerText =
+            data.approximate_presence_count
+              .toLocaleString();
+
+
+          document.getElementById(
+            "guild-members"
+          ).innerText =
+            data.approximate_member_count
+              .toLocaleString();
+
+
+          if (
+            data.guild.icon
+          ) {
+
+            const ext =
+              data.guild.icon.startsWith("a_")
+                ? "gif"
+                : "png";
+
+
+            document.getElementById(
+              "guild-icon"
+            ).src =
+              `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.${ext}?size=128`;
+
           }
+
         }
-      } catch (err) { console.error("Lỗi API Server:", err); }
+
+      } catch (err) {
+
+        console.error(
+          "Lỗi API Server:",
+          err
+        );
+
+      }
+
     }
 
+
+    /* START */
+
     updateDiscordData();
+
     updateServerData();
-    setInterval(updateDiscordData, 30000);
+
+    setInterval(
+      updateDiscordData,
+      30000
+    );
+
   </script>
+
 </body>
 </html>
