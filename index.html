@@ -59,28 +59,16 @@
       font-weight: 400;
     }
 
-    /* HIỆU ỨNG CHỮ BAY KHI NHẤP CHUỘT */
-    .click-text-effect {
+    /* BIỂU TƯỢNG (CON MÈO) DI CHUYỂN ĐẾN CHỖ NHẤN */
+    #cursor-icon {
       position: fixed;
-      font-size: 14px;
-      font-weight: 700;
-      color: #56e368;
-      text-shadow: 0 0 8px rgba(86, 227, 104, 0.6);
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
       pointer-events: none;
-      user-select: none;
-      z-index: 10000;
-      animation: floatUpFade 0.8s ease-out forwards;
-    }
-
-    @keyframes floatUpFade {
-      0% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(0.8);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -120%) scale(1.2);
-      }
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: left 0.15s ease-out, top 0.15s ease-out;
     }
 
     /* VIDEO BACKGROUND CHẠY FULL, LẶP LẠI VÀ KHÔNG BAO GIỜ BỊ ĐỨNG HÌNH */
@@ -113,17 +101,18 @@
       padding: 20px;
     }
 
+    /* KHUNG BIO BỐ CỤC NGANG (LAYOUT MỚI NHƯ ẢNH) */
     .bio-container {
       width: 100%; 
-      max-width: 420px;
+      max-width: 680px;
       background: rgba(20, 20, 20, 0.5);
       backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 28px; 
-      padding: 20px; 
+      padding: 24px; 
       display: flex; 
       flex-direction: column; 
-      gap: 12px;
+      gap: 14px;
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
     }
 
@@ -139,49 +128,51 @@
       transform: translateY(-2px);
     }
 
-    /* 1. HEADER PROFILE */
-    .profile-top { display: flex; align-items: center; gap: 14px; }
-    .avatar-wrapper { position: relative; width: 75px; height: 75px; flex-shrink: 0; }
+    /* 1. HEADER PROFILE NGANG */
+    .profile-top { display: flex; align-items: center; justify-content: space-between; }
+    .profile-left-group { display: flex; align-items: center; gap: 16px; }
+    .avatar-wrapper { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     .avatar-deco { position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; pointer-events: none; }
     
+    .name-badge-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .display-name { 
-      font-size: 22px; 
+      font-size: 24px; 
       font-weight: 800; 
-      color: #fff; 
-      min-height: 28px;
-      display: flex;
-      align-items: center;
+      color: #56e368; 
+      text-shadow: 0 0 10px rgba(86, 227, 104, 0.4);
     }
     
-    .badges-row { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
-    .badge-icon { font-size: 13px; color: rgba(255, 255, 255, 0.8); }
-    
-    .sub-role { 
-      font-size: 13px; 
-      color: rgba(255, 255, 255, 0.7); 
-      font-weight: 500;
-      min-height: 18px;
-      display: flex;
-      align-items: center;
+    .name-tag-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 4px 10px; border-radius: 14px; font-size: 13px; font-weight: 700;
+      color: #ffffff; line-height: 1;
     }
-    
-    .typing-cursor {
-      display: inline-block;
-      width: 2px;
-      height: 16px;
-      background-color: #fff;
-      margin-left: 4px;
-      animation: blink 0.8s infinite;
+    .name-tag-badge img { width: 16px; height: 16px; object-fit: contain; }
+
+    .joined-text {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 4px;
     }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
+    /* PHẦN CHIA 2 CỘT DƯỚI (DISCORD & ROBLOX) */
+    .grid-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
     }
 
-    /* 2. DISCORD USER CARD */
-    .user-link-box { align-items: center; gap: 12px; }
+    @media (max-width: 600px) {
+      .grid-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 2. KHUNG DISCORD CÁ NHÂN */
+    .user-link-box { flex-direction: column; gap: 12px; justify-content: space-between; }
+    .user-box-top { display: flex; align-items: center; gap: 12px; }
     .user-avatar-wrapper { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
     .user-mini-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     
@@ -190,58 +181,63 @@
       border-radius: 50%; border: 3px solid #141414; box-sizing: content-box;
     }
     .status-dot.online { background-color: #23a55a; }
-    .status-dot.idle { 
-      background-color: #f0b232; 
-      -webkit-mask: radial-gradient(circle at 30% 30%, transparent 45%, #000 46%);
-      mask: radial-gradient(circle at 30% 30%, transparent 45%, #000 46%);
+    .status-dot.idle { background-color: #f0b232; }
+    .status-dot.dnd { background-color: #f23f43; }
+    .status-dot.offline { background-color: #80848e; }
+
+    .user-link-info { display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
+    .user-link-name { font-size: 15px; font-weight: 700; color: #fff; }
+    .user-link-status { font-size: 12px; color: rgba(255, 255, 255, 0.6); }
+
+    /* 3. KHUNG ROBLOX */
+    .roblox-box { flex-direction: column; gap: 12px; justify-content: space-between; }
+    .roblox-box-top { display: flex; align-items: center; gap: 12px; }
+    .roblox-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: #111; flex-shrink: 0; }
+    .roblox-info { display: flex; flex-direction: column; gap: 2px; }
+    .roblox-name { font-size: 15px; font-weight: 700; color: #56e368; }
+    .roblox-stats { font-size: 12px; color: rgba(255, 255, 255, 0.7); display: flex; gap: 8px; align-items: center; }
+    .roblox-stats i { color: #2ecc71; font-size: 10px; }
+    
+    .roblox-btn {
+      background: #23a55a; color: #fff; text-align: center; font-size: 12px; font-weight: 700;
+      padding: 6px; border-radius: 10px; text-decoration: none; transition: background 0.2s;
     }
-    .status-dot.dnd { background-color: #f23f43; position: absolute; }
-    .status-dot.dnd::after {
-      content: ""; position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%); width: 8px; height: 2px;
-      background-color: #141414; border-radius: 1px;
-    }
-    .status-dot.offline, .status-dot.invisible { 
-      background-color: #80848e; 
-      -webkit-mask: radial-gradient(circle, transparent 35%, #000 36%);
-      mask: radial-gradient(circle, transparent 35%, #000 36%);
+    .roblox-btn:hover { background: #1f924e; }
+
+    /* 4. THANH MẠNG XÃ HỘI & VIEW */
+    .bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 4px;
     }
 
-    .user-link-info { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
-    .user-name-row { display: flex; align-items: center; gap: 8px; }
-    .user-link-name { font-size: 15px; font-weight: 700; color: #56e368; }
-
-    .guild-tag-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: 700;
-      color: #ffffff; line-height: 1;
+    .social-icons {
+      display: flex;
+      gap: 10px;
     }
-    .guild-tag-badge img { width: 14px; height: 14px; object-fit: contain; }
 
-    .user-link-status { 
-      font-size: 13px; color: #56e368; display: flex; align-items: center; gap: 6px; 
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 18px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
     }
-    .user-link-status.offline-text { font-style: italic; opacity: 0.8; }
-    .status-emoji { width: 16px; height: 16px; object-fit: contain; }
-
-    /* 3. DISCORD SERVER CARD */
-    .guild-box { align-items: center; justify-content: space-between; gap: 10px; }
-    .guild-left { display: flex; align-items: center; gap: 12px; overflow: hidden; }
-    .guild-icon { width: 46px; height: 46px; border-radius: 14px; background: #111; object-fit: cover; flex-shrink: 0; }
-    .guild-name { font-size: 14px; font-weight: 800; }
-    .guild-stats { font-size: 11px; color: rgba(255, 255, 255, 0.6); display: flex; align-items: center; gap: 8px; margin-top: 3px; }
-    .dot-online { width: 6px; height: 6px; background: #23a55a; border-radius: 50%; display: inline-block; }
-    .dot-member { width: 6px; height: 6px; background: rgba(255, 255, 255, 0.4); border-radius: 50%; display: inline-block; }
-
-    .join-btn {
-      background: #23a55a; color: #fff; text-decoration: none; font-size: 12px; font-weight: 700;
-      padding: 6px 14px; border-radius: 8px; flex-shrink: 0; transition: background 0.2s;
+    .social-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: translateY(-2px);
     }
-    .join-btn:hover { background: #1f924e; }
 
-    .view-count { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255, 255, 255, 0.7); font-weight: 600; padding: 2px 6px; }
+    .view-count { display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255, 255, 255, 0.7); font-weight: 600; }
+    .view-count i { color: #2ecc71; }
   </style>
 </head>
 <body>
@@ -264,83 +260,90 @@
     <source src="./nhac.mp3" type="audio/mp3">
   </audio>
 
+  <!-- BIỂU TƯỢNG (CON MÈO) DI CHUYỂN ĐẾN CHỖ NHẤN -->
+  <img id="cursor-icon" src="./cat.png" alt="Icon">
+
   <div class="bio-container">
     
-    <!-- HEADER PROFILE -->
+    <!-- 1. HEADER PROFILE NGANG -->
     <div class="card-box profile-top">
-      <div class="avatar-wrapper">
-        <img id="avatar-deco" class="avatar-deco" style="display:none;" alt="Decoration">
-        <img id="discord-avatar" class="avatar-img" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
+      <div class="profile-left-group">
+        <div class="avatar-wrapper">
+          <img id="avatar-deco" class="avatar-deco" style="display:none;" alt="Decoration">
+          <img id="discord-avatar" class="avatar-img" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
+        </div>
+        <div>
+          <div class="name-badge-row">
+            <div class="display-name">
+              <span id="typed-name"></span><span class="typing-cursor"></span>
+            </div>
+            <div class="name-tag-badge">
+              <img src="https://cdn3.emoji.gg/emojis/68950-purple-heart.gif" alt="badge">
+              <span>OwO</span>
+            </div>
+          </div>
+          <div class="joined-text">Joined about 2 years ago</div>
+        </div>
       </div>
       <div>
-        <!-- DÒNG TRÊN: HIỆU ỨNG GÕ CHỮ CHO TÊN CHÍNH -->
-        <div class="display-name">
-          <span id="typed-name"></span><span class="typing-cursor"></span>
-        </div>
-        <div class="badges-row">
-          <i class="fa-solid fa-bug badge-icon" style="color: #23a55a;"></i>
-          <i class="fa-solid fa-gem badge-icon" style="color: #9b59b6;"></i>
-          <i class="fa-solid fa-star badge-icon" style="color: #2ecc71;"></i>
-          <i class="fa-solid fa-rocket badge-icon" style="color: #e74c3c;"></i>
-          <i class="fa-solid fa-shield-halved badge-icon" style="color: #e67e22;"></i>
-        </div>
-        <!-- DÒNG DƯỚI: HIỆU ỨNG GÕ CHỮ CHO SUB-ROLE KHÁC NHAU -->
-        <div class="sub-role">
-          <span id="typed-role"></span>
-        </div>
+        <i class="fa-solid fa-triangle-exclamation" style="font-size: 24px; color: #f1c40f;"></i>
       </div>
     </div>
 
-    <!-- KHUNG DISCORD CÁ NHÂN -->
-    <a id="discord-user-link" href="https://discord.com/users/862273858214821929" target="_blank" class="card-box user-link-box">
-      <div class="user-avatar-wrapper">
-        <img id="mini-avatar" class="user-mini-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Mini Avatar">
-        <div id="status-dot" class="status-dot offline"></div>
-      </div>
+    <!-- KHUNG LƯỚI 2 CỘT (DISCORD & ROBLOX) -->
+    <div class="grid-cards">
       
-      <div class="user-link-info">
-        <div class="user-name-row">
-          <span id="user-link-name" class="user-link-name">Loading...</span>
-          <div class="guild-tag-badge">
-            <img src="https://cdn3.emoji.gg/emojis/68950-purple-heart.gif" alt="badge">
-            <span>OwO</span>
+      <!-- 2. KHUNG DISCORD CÁ NHÂN -->
+      <a id="discord-user-link" href="https://discord.com/users/862273858214821929" target="_blank" class="card-box user-link-box">
+        <div class="user-box-top">
+          <div class="user-avatar-wrapper">
+            <img id="mini-avatar" class="user-mini-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Mini Avatar">
+            <div id="status-dot" class="status-dot offline"></div>
+          </div>
+          <div class="user-link-info">
+            <span id="user-link-name" class="user-link-name">Loading...</span>
+            <div id="user-link-status" class="user-link-status">Fetching status...</div>
           </div>
         </div>
-        <div id="user-link-status" class="user-link-status">Fetching status...</div>
-      </div>
-    </a>
+      </a>
 
-    <!-- KHUNG MÁY CHỦ DISCORD -->
-    <a id="guild-link" href="#" target="_blank" class="card-box guild-box">
-      <div class="guild-left">
-        <img id="guild-icon" class="guild-icon" src="https://cdn.discordapp.com/embed/avatars/1.png" alt="Server Icon">
-        <div>
-          <div id="guild-name" class="guild-name">Loading Server...</div>
-          <div class="guild-stats">
-            <span><span class="dot-online"></span> <span id="guild-online">0</span> Online</span>
-            <span><span class="dot-member"></span> <span id="guild-members">0</span> Members</span>
+      <!-- 3. KHUNG ROBLOX -->
+      <div class="card-box roblox-box">
+        <div class="roblox-box-top">
+          <img class="roblox-avatar" src="https://tr.rbxcdn.com/30day-avatar/150/150/Avatar/Png" alt="Roblox Avatar">
+          <div class="roblox-info">
+            <div class="roblox-name">Hanh_05</div>
+            <div class="roblox-stats">
+              <span><i class="fa-solid fa-circle"></i> 277 Friends</span>
+              <span>37 Followers</span>
+            </div>
           </div>
         </div>
+        <a href="https://www.roblox.com" target="_blank" class="roblox-btn">View Profile</a>
       </div>
-      <div class="join-btn">Join</div>
-    </a>
 
-    <!-- VIEW COUNT -->
-    <div class="view-count">
-      <i class="fa-regular fa-eye"></i>
-      <span>3,152</span>
+    </div>
+
+    <!-- 4. THANH MẠNG XÃ HỘI & VIEW -->
+    <div class="bottom-row">
+      <div class="social-icons">
+        <a href="#" class="social-btn" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" class="social-btn" target="_blank"><i class="fa-brands fa-discord"></i></a>
+        <a href="#" class="social-btn" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#" class="social-btn" target="_blank"><i class="fa-brands fa-steam"></i></a>
+        <a href="#" class="social-btn" target="_blank"><i class="fa-brands fa-guilded"></i></a>
+      </div>
+      <div class="view-count">
+        <i class="fa-regular fa-eye"></i>
+        <span>461</span>
+      </div>
     </div>
 
   </div>
 
   <script>
     const DISCORD_USER_ID = "862273858214821929"; 
-    const DISCORD_INVITE_CODE = "XEaC68tVnv"; 
 
-    let offlineTimestamp = null;
-    let timerInterval = null;
-
-    // HÀM KHI NHẤN VÀO MÀN HÌNH "ENTER"
     function enterSite() {
       const splash = document.getElementById('splash-screen');
       const bgAudio = document.getElementById('bg-audio');
@@ -349,49 +352,26 @@
       if (splash) {
         splash.classList.add('hidden');
       }
-
       if (bgAudio) {
         bgAudio.play().catch(err => console.log("Không phát được nhạc:", err));
       }
-
       if (video) {
         video.play().catch(err => console.log("Không phát được video:", err));
       }
     }
 
-    // TÍNH NĂNG HIỆN BIỂN CHỮ KHI NHẤP CHUỘT / CHẠM MÀN HÌNH
-    const clickPhrases = ["Hanh Lẻ Năm", "Dev", "Hello!", "OwO", "Click!", "Code Website"];
-    
+    // DI CHUYỂN BIỂU TƯỢNG (CON MÈO) ĐẾN NƠI NHẤP CHUỘT
     window.addEventListener('click', (e) => {
-      // Tránh hiện chữ đè lên nút Enter lúc đầu nếu chưa bấm
       const splash = document.getElementById('splash-screen');
       if (splash && !splash.classList.contains('hidden')) return;
 
-      createFloatingText(e.clientX, e.clientY);
+      const cursorIcon = document.getElementById('cursor-icon');
+      cursorIcon.style.left = `${e.clientX}px`;
+      cursorIcon.style.top = `${e.clientY}px`;
     });
 
-    function createFloatingText(x, y) {
-      const el = document.createElement('div');
-      el.className = 'click-text-effect';
-      
-      // Chọn ngẫu nhiên một từ trong danh sách
-      const randomText = clickPhrases[Math.floor(Math.random() * clickPhrases.length)];
-      el.innerText = randomText;
-
-      // Đặt vị trí xuất hiện đúng chỗ click
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
-
-      document.body.appendChild(el);
-
-      // Tự động xóa phần tử sau khi chạy xong animation (0.8s) để không bị nặng RAM
-      setTimeout(() => {
-        el.remove();
-      }, 800);
-    }
-
-    // 1. HIỆU ỨNG GÕ CHỮ CHO DÒNG TRÊN (Tên chính: Hanh Lẻ Năm)
-    const nameWords = ["Hanh Lẻ Năm"];
+    // HIỆU ỨNG GÕ CHỮ CHO TÊN CHÍNH
+    const nameWords = ["Hanh Lẻ"];
     let nameWordIndex = 0;
     let nameCharIndex = 0;
     let nameIsDeleting = false;
@@ -422,54 +402,9 @@
       setTimeout(typeNameEffect, typeSpeed);
     }
 
-    // 2. HIỆU ỨNG GÕ CHỮ CHO DÒNG DƯỚI (Sub-role)
-    const roleWords = ["Dev", "Code Website", "Welcome to my Bio"];
-    let roleWordIndex = 0;
-    let roleCharIndex = 0;
-    let roleIsDeleting = false;
-    const typedRoleSpan = document.getElementById("typed-role");
-
-    function typeRoleEffect() {
-      const currentWord = roleWords[roleWordIndex];
-      
-      if (roleIsDeleting) {
-        typedRoleSpan.textContent = currentWord.substring(0, roleCharIndex - 1);
-        roleCharIndex--;
-      } else {
-        typedRoleSpan.textContent = currentWord.substring(0, roleCharIndex + 1);
-        roleCharIndex++;
-      }
-
-      let typeSpeed = roleIsDeleting ? 50 : 90;
-
-      if (!roleIsDeleting && roleCharIndex === currentWord.length) {
-        typeSpeed = 2000; 
-        roleIsDeleting = true;
-      } else if (roleIsDeleting && roleCharIndex === 0) {
-        roleIsDeleting = false;
-        roleWordIndex = (roleWordIndex + 1) % roleWords.length;
-        typeSpeed = 400; 
-      }
-
-      setTimeout(typeRoleEffect, typeSpeed);
-    }
-
     document.addEventListener("DOMContentLoaded", () => {
       setTimeout(typeNameEffect, 500);
-      setTimeout(typeRoleEffect, 800);
     });
-
-    function formatLastSeen(ts) {
-      if (!ts) return "last seen recently";
-      const diffSec = Math.floor((Date.now() - ts) / 1000);
-      if (diffSec < 60) return "last seen just now";
-      const mins = Math.floor(diffSec / 60);
-      if (mins < 60) return `last seen ${mins} minute${mins > 1 ? 's' : ''} ago`;
-      const hours = Math.floor(mins / 60);
-      if (hours < 24) return `last seen ${hours} hour${hours > 1 ? 's' : ''} ago`;
-      const days = Math.floor(hours / 24);
-      return `last seen ${days} day${days > 1 ? 's' : ''} ago`;
-    }
 
     async function updateDiscordData() {
       try {
@@ -497,74 +432,20 @@
           }
 
           document.getElementById('status-dot').className = `status-dot ${status}`;
-
           const statusElem = document.getElementById('user-link-status');
 
-          if (status === 'offline') {
-            statusElem.classList.add('offline-text');
-
-            let savedOfflineTime = localStorage.getItem('discord_offline_time');
-            if (!savedOfflineTime) {
-              savedOfflineTime = Date.now();
-              localStorage.setItem('discord_offline_time', savedOfflineTime);
-            }
-
-            offlineTimestamp = parseInt(savedOfflineTime);
-
-            if (timerInterval) clearInterval(timerInterval);
-            statusElem.innerText = formatLastSeen(offlineTimestamp);
-            timerInterval = setInterval(() => { 
-              statusElem.innerText = formatLastSeen(offlineTimestamp); 
-            }, 10000);
-
+          const customActivity = data.activities?.find(a => a.type === 4);
+          if (customActivity && customActivity.state) {
+            statusElem.innerText = customActivity.state;
           } else {
-            localStorage.removeItem('discord_offline_time');
-            statusElem.classList.remove('offline-text');
-            offlineTimestamp = null;
-            if (timerInterval) clearInterval(timerInterval);
-
-            const customActivity = data.activities?.find(a => a.type === 4);
-
-            if (customActivity && (customActivity.state || customActivity.emoji)) {
-              let statusHTML = '';
-              if (customActivity.emoji) {
-                if (customActivity.emoji.id) {
-                  const ext = customActivity.emoji.animated ? 'gif' : 'png';
-                  statusHTML += `<img class="status-emoji" src="https://cdn.discordapp.com/emojis/${customActivity.emoji.id}.${ext}"> `;
-                } else { 
-                  statusHTML += `${customActivity.emoji.name} `; 
-                }
-              }
-              if (customActivity.state) statusHTML += customActivity.state;
-              statusElem.innerHTML = statusHTML;
-            } else {
-              const statusTextMap = { 'dnd': 'Do Not Disturb', 'idle': 'Idle', 'online': 'Online now' };
-              statusElem.innerText = statusTextMap[status] || 'Online now';
-            }
+            const statusTextMap = { 'dnd': 'Do Not Disturb', 'idle': 'Idle', 'online': 'Online now', 'offline': 'Offline' };
+            statusElem.innerText = statusTextMap[status] || 'Online now';
           }
         }
       } catch (err) { console.error("Lỗi API User:", err); }
     }
 
-    async function updateServerData() {
-      try {
-        const res = await fetch(`https://discord.com/api/v9/invites/${DISCORD_INVITE_CODE}?with_counts=true`);
-        const data = await res.json();
-        if (data && data.guild) {
-          document.getElementById('guild-link').href = `https://discord.gg/${DISCORD_INVITE_CODE}`;
-          document.getElementById('guild-name').innerText = data.guild.name;
-          document.getElementById('guild-online').innerText = data.approximate_presence_count.toLocaleString();
-          document.getElementById('guild-members').innerText = data.approximate_member_count.toLocaleString();
-          if (data.guild.icon) {
-            const ext = data.guild.icon.startsWith('a_') ? 'gif' : 'png';
-            document.getElementById('guild-icon').src = `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.${ext}?size=128`;
-          }
-        }
-      } catch (err) { console.error("Lỗi API Server:", err); }
-    }
-
     updateDiscordData();
-    updateServerData();
     setInterval(updateDiscordData, 30000);
   </script>
 </body>
