@@ -12,12 +12,25 @@
   >
 
   <style>
+
+    /* =========================
+       FONT PLAYPEN SANS
+       ========================= */
+
+    @font-face {
+      font-family: "Playpen Sans";
+      src: url("./PlaypenSans-Bold.ttf") format("truetype");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, Helvetica, Arial, sans-serif;
+      font-family: "Playpen Sans", sans-serif;
+      font-weight: 700;
     }
 
     html,
@@ -27,6 +40,52 @@
       margin: 0;
       padding: 0;
       overflow-x: hidden;
+    }
+
+    /* =========================
+       7 MÀU CẦU VỒNG
+       ========================= */
+
+    @keyframes rainbowText {
+      0% {
+        color: #ff0000;
+        text-shadow: 0 0 8px #ff0000;
+      }
+
+      14% {
+        color: #ff7f00;
+        text-shadow: 0 0 8px #ff7f00;
+      }
+
+      28% {
+        color: #ffff00;
+        text-shadow: 0 0 8px #ffff00;
+      }
+
+      42% {
+        color: #00ff00;
+        text-shadow: 0 0 8px #00ff00;
+      }
+
+      57% {
+        color: #00ffff;
+        text-shadow: 0 0 8px #00ffff;
+      }
+
+      71% {
+        color: #0000ff;
+        text-shadow: 0 0 8px #0000ff;
+      }
+
+      85% {
+        color: #8b00ff;
+        text-shadow: 0 0 8px #8b00ff;
+      }
+
+      100% {
+        color: #ff0000;
+        text-shadow: 0 0 8px #ff0000;
+      }
     }
 
     /* =========================
@@ -62,20 +121,25 @@
 
     .splash-content {
       text-align: center;
+
       display: flex;
       flex-direction: column;
+
       gap: 8px;
     }
 
     .splash-title {
       font-size: 28px;
-      font-weight: 600;
-      color: #fff;
+
+      animation:
+        rainbowText 5s linear infinite;
     }
 
     .splash-subtitle {
       font-size: 13px;
-      color: rgba(255,255,255,.5);
+
+      animation:
+        rainbowText 5s linear infinite;
     }
 
     /* =========================
@@ -86,24 +150,23 @@
       position: fixed;
 
       font-size: 14px;
-      font-weight: 700;
 
-      color: #56e368;
-
-      text-shadow:
-        0 0 8px rgba(86,227,104,.6);
+      color: #fff;
 
       pointer-events: none;
       user-select: none;
 
       z-index: 10000;
 
-      animation: floatUpFade .8s ease-out forwards;
+      animation:
+        floatUpFade .8s ease-out forwards,
+        rainbowText 5s linear infinite;
     }
 
     @keyframes floatUpFade {
       0% {
         opacity: 1;
+
         transform:
           translate(-50%,-50%)
           scale(.8);
@@ -111,6 +174,7 @@
 
       100% {
         opacity: 0;
+
         transform:
           translate(-50%,-120%)
           scale(1.2);
@@ -153,6 +217,7 @@
 
     body {
       background: #0b0b0b;
+
       color: #fff;
 
       display: flex;
@@ -171,9 +236,11 @@
 
     .bio-container {
       width: 100%;
+
       max-width: 720px;
 
-      background: rgba(20,20,20,.5);
+      background:
+        rgba(20,20,20,.5);
 
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
@@ -229,11 +296,9 @@
         translateY(-2px);
     }
 
-    /* ==================================================
-       PROFILE TOP
-       
-       ĐÃ BỎ KHUNG / BO VIỀN / NỀN
-       ================================================== */
+    /* =========================
+       PROFILE
+       ========================= */
 
     .profile-top {
       grid-column: 1 / -1;
@@ -244,24 +309,31 @@
 
       gap: 14px;
 
-      /* BỎ KHUNG */
-      background: transparent !important;
+      background:
+        transparent !important;
 
-      border: none !important;
+      border:
+        none !important;
 
-      border-radius: 0 !important;
+      border-radius:
+        0 !important;
 
-      box-shadow: none !important;
+      box-shadow:
+        none !important;
 
-      padding: 0 !important;
+      padding:
+        0 !important;
 
-      transform: none !important;
+      transform:
+        none !important;
     }
 
     .profile-top:hover {
-      background: transparent !important;
+      background:
+        transparent !important;
 
-      transform: none !important;
+      transform:
+        none !important;
     }
 
     /* =========================
@@ -305,15 +377,14 @@
     .display-name {
       font-size: 22px;
 
-      font-weight: 800;
-
-      color: #fff;
-
       min-height: 28px;
 
       display: flex;
 
       align-items: center;
+
+      animation:
+        rainbowText 5s linear infinite;
     }
 
     /* =========================
@@ -365,16 +436,18 @@
     .sub-role {
       font-size: 13px;
 
-      color:
-        rgba(255,255,255,.7);
+      color: #fff;
 
-      font-weight: 500;
+      font-weight: 700;
 
       min-height: 18px;
 
       display: flex;
 
       align-items: center;
+
+      animation:
+        rainbowText 5s linear infinite;
     }
 
     .typing-cursor {
@@ -387,7 +460,8 @@
 
       margin-left: 4px;
 
-      animation: blink .8s infinite;
+      animation:
+        blink .8s infinite;
     }
 
     @keyframes blink {
@@ -540,9 +614,8 @@
     .user-link-name {
       font-size: 15px;
 
-      font-weight: 700;
-
-      color: #56e368;
+      animation:
+        rainbowText 5s linear infinite;
     }
 
     .guild-tag-badge {
@@ -564,8 +637,6 @@
 
       font-size: 12px;
 
-      font-weight: 700;
-
       color: #fff;
 
       line-height: 1;
@@ -581,7 +652,7 @@
     .user-link-status {
       font-size: 13px;
 
-      color: #56e368;
+      color: #fff;
 
       display: flex;
 
@@ -594,6 +665,9 @@
       overflow: hidden;
 
       text-overflow: ellipsis;
+
+      animation:
+        rainbowText 5s linear infinite;
     }
 
     .user-link-status.offline-text {
@@ -647,7 +721,8 @@
     .guild-name {
       font-size: 14px;
 
-      font-weight: 800;
+      animation:
+        rainbowText 5s linear infinite;
     }
 
     .guild-stats {
@@ -695,8 +770,6 @@
 
       font-size: 12px;
 
-      font-weight: 700;
-
       padding: 6px 14px;
 
       border-radius: 8px;
@@ -705,6 +778,9 @@
 
       transition:
         background .2s;
+
+      animation:
+        rainbowText 5s linear infinite;
     }
 
     .join-btn:hover {
@@ -713,7 +789,6 @@
 
     /* =========================
        SOCIAL
-       LUÔN CHÍNH GIỮA
        ========================= */
 
     .social-links {
@@ -799,12 +874,12 @@
 
       font-size: 12px;
 
-      color:
-        rgba(255,255,255,.7);
-
-      font-weight: 600;
+      color: #fff;
 
       padding: 2px 6px;
+
+      animation:
+        rainbowText 5s linear infinite;
     }
 
     /* =========================
@@ -829,18 +904,21 @@
         padding: 16px;
       }
 
-      /* PROFILE VẪN KHÔNG CÓ KHUNG */
-
       .profile-top {
-        background: transparent !important;
+        background:
+          transparent !important;
 
-        border: none !important;
+        border:
+          none !important;
 
-        border-radius: 0 !important;
+        border-radius:
+          0 !important;
 
-        padding: 0 !important;
+        padding:
+          0 !important;
 
-        box-shadow: none !important;
+        box-shadow:
+          none !important;
       }
 
       .avatar-wrapper {
@@ -901,6 +979,7 @@
         height: 20px;
       }
     }
+
   </style>
 </head>
 
@@ -974,10 +1053,7 @@
 
   <div class="bio-container">
 
-    <!-- =========================
-         PROFILE
-         KHÔNG CÒN KHUNG
-         ========================= -->
+    <!-- PROFILE -->
 
     <div class="card-box profile-top">
 
@@ -1011,38 +1087,31 @@
         </div>
 
 
-        <!-- EMOJI CHUNG 1 KHUNG -->
-
         <div class="badges-row">
 
           <img
             src="https://cdn3.emoji.gg/emojis/1309-devloper.png"
             class="badge-icon"
-            alt="badge"
           >
 
           <img
             src="https://cdn3.emoji.gg/emojis/100488-rules.png"
             class="badge-icon"
-            alt="badge"
           >
 
           <img
             src="https://cdn3.emoji.gg/emojis/209249-discord1.png"
             class="badge-icon"
-            alt="badge"
           >
 
           <img
             src="https://cdn3.emoji.gg/emojis/938309-bughuntergold.png"
             class="badge-icon"
-            alt="badge"
           >
 
           <img
             src="https://cdn3.emoji.gg/emojis/544377-discordearlysupporterbadge.png"
             class="badge-icon"
-            alt="badge"
           >
 
         </div>
@@ -1059,9 +1128,7 @@
     </div>
 
 
-    <!-- =========================
-         DISCORD USER
-         ========================= -->
+    <!-- DISCORD USER -->
 
     <a
       id="discord-user-link"
@@ -1076,7 +1143,6 @@
           id="mini-avatar"
           class="user-mini-avatar"
           src="https://cdn.discordapp.com/embed/avatars/0.png"
-          alt="Mini Avatar"
         >
 
         <div
@@ -1103,7 +1169,6 @@
 
             <img
               src="https://cdn3.emoji.gg/emojis/68950-purple-heart.gif"
-              alt="badge"
             >
 
             <span>
@@ -1127,9 +1192,7 @@
     </a>
 
 
-    <!-- =========================
-         DISCORD SERVER
-         ========================= -->
+    <!-- DISCORD SERVER -->
 
     <a
       id="guild-link"
@@ -1144,7 +1207,6 @@
           id="guild-icon"
           class="guild-icon"
           src="https://cdn.discordapp.com/embed/avatars/1.png"
-          alt="Server Icon"
         >
 
         <div>
@@ -1198,33 +1260,65 @@
     </a>
 
 
-    <!-- =========================
-         SOCIAL ICONS
-         ========================= -->
+    <!-- SOCIAL -->
 
     <div class="social-links">
 
-  <a href="https://www.facebook.com/share/1ExZxcKB9a/?mibextid=wwXIfr" target="_blank" class="social-icon">
-    <img src="https://cdn3.emoji.gg/emojis/2116-facebook.png">
-  </a>
+      <a
+        href="https://www.facebook.com/share/1ExZxcKB9a/?mibextid=wwXIfr"
+        target="_blank"
+        class="social-icon"
+      >
+        <img
+          src="https://cdn3.emoji.gg/emojis/2116-facebook.png"
+        >
+      </a>
 
-  <a href="https://paypal.me/harblx?locale.x=vi_VN&country.x=VN" target="_blank" class="social-icon">
-    <img src="https://cdn3.emoji.gg/emojis/20747-paypal.png">
-  </a>
 
-  <a href="https://steamcommunity.com/profiles/76561199518679246/" target="_blank" class="social-icon">
-    <img src="https://cdn3.emoji.gg/emojis/52226-steam.png">
-  </a>
+      <a
+        href="https://paypal.me/harblx?locale.x=vi_VN&country.x=VN"
+        target="_blank"
+        class="social-icon"
+      >
+        <img
+          src="https://cdn3.emoji.gg/emojis/20747-paypal.png"
+        >
+      </a>
 
-  <a href="https://www.tiktok.com/@ha2.05?_r=1&_t=ZS-99gDcp9LaWz" target="_blank" class="social-icon">
-    <img src="https://cdn3.emoji.gg/emojis/38698-icono-de-tiktok.png">
-  </a>
 
-  <a href="https://www.roblox.com/users/2673657561/profile" target="_blank" class="social-icon">
-    <img src="https://cdn3.emoji.gg/emojis/480026-robloxlogo.png">
-  </a>
+      <a
+        href="https://steamcommunity.com/profiles/76561199518679246/"
+        target="_blank"
+        class="social-icon"
+      >
+        <img
+          src="https://cdn3.emoji.gg/emojis/52226-steam.png"
+        >
+      </a>
 
-</div>
+
+      <a
+        href="https://www.tiktok.com/@ha2.05?_r=1&_t=ZS-99gDcp9LaWz"
+        target="_blank"
+        class="social-icon"
+      >
+        <img
+          src="https://cdn3.emoji.gg/emojis/38698-icono-de-tiktok.png"
+        >
+      </a>
+
+
+      <a
+        href="https://www.roblox.com/users/2673657561/profile"
+        target="_blank"
+        class="social-icon"
+      >
+        <img
+          src="https://cdn3.emoji.gg/emojis/480026-robloxlogo.png"
+        >
+      </a>
+
+    </div>
 
 
     <!-- VIEW -->
@@ -1244,6 +1338,10 @@
 
   <script>
 
+    /* =========================
+       CONFIG
+       ========================= */
+
     const DISCORD_USER_ID =
       "862273858214821929";
 
@@ -1251,10 +1349,13 @@
       "XEaC68tVnv";
 
     let offlineTimestamp = null;
+
     let timerInterval = null;
 
 
-    /* ENTER */
+    /* =========================
+       ENTER
+       ========================= */
 
     function enterSite() {
 
@@ -1313,15 +1414,24 @@
     }
 
 
-    /* CLICK TEXT */
+    /* =========================
+       CLICK TEXT
+       ========================= */
 
     const clickPhrases = [
+
       "Hanh Lẻ Năm",
+
       "Dev",
+
       "Hello!",
+
       "OwO",
+
       "Click!",
+
       "Code Website"
+
     ];
 
 
@@ -1341,7 +1451,9 @@
             "hidden"
           )
         ) {
+
           return;
+
         }
 
 
@@ -1399,14 +1511,21 @@
     }
 
 
-    /* NAME */
+    /* =========================
+       NAME TYPING
+       ========================= */
 
     const nameWords = [
+
       "Hanh Lẻ Năm"
+
     ];
 
+
     let nameWordIndex = 0;
+
     let nameCharIndex = 0;
+
     let nameIsDeleting = false;
 
 
@@ -1419,7 +1538,9 @@
     function typeNameEffect() {
 
       const currentWord =
-        nameWords[nameWordIndex];
+        nameWords[
+          nameWordIndex
+        ];
 
 
       if (nameIsDeleting) {
@@ -1488,16 +1609,25 @@
     }
 
 
-    /* ROLE */
+    /* =========================
+       ROLE TYPING
+       ========================= */
 
     const roleWords = [
+
       "Dev",
+
       "Code Website",
+
       "Welcome to my Bio"
+
     ];
 
+
     let roleWordIndex = 0;
+
     let roleCharIndex = 0;
+
     let roleIsDeleting = false;
 
 
@@ -1510,7 +1640,9 @@
     function typeRoleEffect() {
 
       const currentWord =
-        roleWords[roleWordIndex];
+        roleWords[
+          roleWordIndex
+        ];
 
 
       if (roleIsDeleting) {
@@ -1579,6 +1711,10 @@
     }
 
 
+    /* =========================
+       START TYPING
+       ========================= */
+
     document.addEventListener(
       "DOMContentLoaded",
       () => {
@@ -1597,7 +1733,9 @@
     );
 
 
-    /* LAST SEEN */
+    /* =========================
+       LAST SEEN
+       ========================= */
 
     function formatLastSeen(ts) {
 
@@ -1616,7 +1754,9 @@
 
 
       const mins =
-        Math.floor(diffSec / 60);
+        Math.floor(
+          diffSec / 60
+        );
 
 
       if (mins < 60) {
@@ -1629,7 +1769,9 @@
 
 
       const hours =
-        Math.floor(mins / 60);
+        Math.floor(
+          mins / 60
+        );
 
 
       if (hours < 24) {
@@ -1642,7 +1784,9 @@
 
 
       const days =
-        Math.floor(hours / 24);
+        Math.floor(
+          hours / 24
+        );
 
 
       return `last seen ${days} day${
@@ -1652,7 +1796,9 @@
     }
 
 
-    /* DISCORD USER */
+    /* =========================
+       DISCORD USER
+       ========================= */
 
     async function updateDiscordData() {
 
@@ -1689,6 +1835,8 @@
             user.username;
 
 
+          /* AVATAR */
+
           if (user.avatar) {
 
             const ext =
@@ -1715,6 +1863,8 @@
           }
 
 
+          /* AVATAR DECORATION */
+
           if (
             user.avatar_decoration_data
           ) {
@@ -1735,6 +1885,8 @@
           }
 
 
+          /* STATUS */
+
           document.getElementById(
             "status-dot"
           ).className =
@@ -1746,6 +1898,8 @@
               "user-link-status"
             );
 
+
+          /* OFFLINE */
 
           if (
             status === "offline"
@@ -1808,7 +1962,11 @@
               );
 
 
-          } else {
+          }
+
+          /* ONLINE */
+
+          else {
 
             localStorage.removeItem(
               "discord_offline_time"
@@ -1863,7 +2021,9 @@
                   statusHTML +=
                     `<img class="status-emoji" src="https://cdn.discordapp.com/emojis/${customActivity.emoji.id}.${ext}">`;
 
-                } else {
+                }
+
+                else {
 
                   statusHTML +=
                     `${customActivity.emoji.name} `;
@@ -1886,7 +2046,9 @@
               statusElem.innerHTML =
                 statusHTML;
 
-            } else {
+            }
+
+            else {
 
               const statusTextMap = {
 
@@ -1912,7 +2074,9 @@
 
         }
 
-      } catch (err) {
+      }
+
+      catch (err) {
 
         console.error(
           "Lỗi API User:",
@@ -1924,7 +2088,9 @@
     }
 
 
-    /* DISCORD SERVER */
+    /* =========================
+       DISCORD SERVER
+       ========================= */
 
     async function updateServerData() {
 
@@ -1971,6 +2137,8 @@
               .toLocaleString();
 
 
+          /* SERVER ICON */
+
           if (
             data.guild.icon
           ) {
@@ -1990,7 +2158,9 @@
 
         }
 
-      } catch (err) {
+      }
+
+      catch (err) {
 
         console.error(
           "Lỗi API Server:",
@@ -2002,11 +2172,14 @@
     }
 
 
-    /* START */
+    /* =========================
+       START
+       ========================= */
 
     updateDiscordData();
 
     updateServerData();
+
 
     setInterval(
       updateDiscordData,
