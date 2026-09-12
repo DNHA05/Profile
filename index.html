@@ -127,31 +127,61 @@
       transform: translateY(-2px);
     }
 
-    /* 1. HEADER PROFILE */
-    .profile-top { display: flex; align-items: center; justify-content: space-between; }
-    .profile-left-group { display: flex; align-items: center; gap: 14px; }
-    .avatar-wrapper { position: relative; width: 75px; height: 75px; flex-shrink: 0; }
-    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-    .avatar-deco { position: absolute; top: -10%; left: -10%; width: 120%; height: 120%; pointer-events: none; }
-    
+    /* 1. HEADER PROFILE (BỐ CỤC DỌC - ĐÃ BỎ ICON CẢNH BÁO VÀ HUY HIỆU DƯỚI TÊN) */
+    .profile-top {
+      position: relative;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 18px;
+    }
+
+    .profile-header-top {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 85px;
+      height: 85px;
+      flex-shrink: 0;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .avatar-deco {
+      position: absolute;
+      top: -12%;
+      left: -12%;
+      width: 124%;
+      height: 124%;
+      pointer-events: none;
+    }
+
     .display-name { 
-      font-size: 22px; 
+      font-size: 24px; 
       font-weight: 800; 
       color: #56e368; 
-      min-height: 28px;
+      min-height: 30px;
       display: flex;
       align-items: center;
       text-shadow: 0 0 8px rgba(86, 227, 104, 0.4);
+      margin-bottom: 6px;
     }
     
-    .badges-row { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
-    .badge-icon { font-size: 13px; color: rgba(255, 255, 255, 0.8); }
-    
     .sub-role { 
-      font-size: 13px; 
+      font-size: 14px; 
       color: rgba(255, 255, 255, 0.7); 
       font-weight: 500;
-      min-height: 18px;
+      min-height: 20px;
       display: flex;
       align-items: center;
     }
@@ -170,9 +200,9 @@
       50% { opacity: 0; }
     }
 
-    /* 2. DISCORD USER CARD */
-    .user-link-box { align-items: center; justify-content: space-between; gap: 12px; }
-    .user-box-left { display: flex; align-items: center; gap: 12px; overflow: hidden; }
+    /* 2. DISCORD USER CARD (ĐÃ BỎ ICON MŨI TÊN BÊN PHẢI) */
+    .user-link-box { align-items: center; justify-content: flex-start; gap: 12px; }
+    .user-box-left { display: flex; align-items: center; gap: 12px; overflow: hidden; width: 100%; }
     .user-avatar-wrapper { position: relative; width: 44px; height: 44px; flex-shrink: 0; }
     .user-mini-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     
@@ -275,35 +305,25 @@
 
   <div class="bio-container">
     
-    <!-- 1. HEADER PROFILE -->
+    <!-- 1. HEADER PROFILE (ĐÃ BỎ ICON CẢNH BÁO & HUY HIỆU) -->
     <div class="card-box profile-top">
-      <div class="profile-left-group">
+      <div class="profile-header-top">
         <div class="avatar-wrapper">
           <img id="avatar-deco" class="avatar-deco" style="display:none;" alt="Decoration">
           <img id="discord-avatar" class="avatar-img" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar">
         </div>
-        <div>
-          <div class="display-name">
-            <span id="typed-name"></span><span class="typing-cursor"></span>
-          </div>
-          <div class="badges-row">
-            <i class="fa-solid fa-bug badge-icon" style="color: #23a55a;"></i>
-            <i class="fa-solid fa-gem badge-icon" style="color: #9b59b6;"></i>
-            <i class="fa-solid fa-star badge-icon" style="color: #2ecc71;"></i>
-            <i class="fa-solid fa-rocket badge-icon" style="color: #e74c3c;"></i>
-            <i class="fa-solid fa-shield-halved badge-icon" style="color: #e67e22;"></i>
-          </div>
-          <div class="sub-role">
-            <span id="typed-role"></span>
-          </div>
-        </div>
       </div>
       <div>
-        <i class="fa-solid fa-triangle-exclamation" style="font-size: 20px; color: #f1c40f;"></i>
+        <div class="display-name">
+          <span id="typed-name"></span><span class="typing-cursor"></span>
+        </div>
+        <div class="sub-role">
+          <span id="typed-role"></span>
+        </div>
       </div>
     </div>
 
-    <!-- 2. KHUNG DISCORD CÁ NHÂN -->
+    <!-- 2. KHUNG DISCORD CÁ NHÂN (ĐÃ BỎ MŨI TÊN BÊN PHẢI) -->
     <a id="discord-user-link" href="https://discord.com/users/862273858214821929" target="_blank" class="card-box user-link-box">
       <div class="user-box-left">
         <div class="user-avatar-wrapper">
@@ -321,7 +341,6 @@
           <div id="user-link-status" class="user-link-status">last seen 5 minutes ago</div>
         </div>
       </div>
-      <i class="fa-solid fa-chevron-right" style="font-size: 12px; opacity: 0.5;"></i>
     </a>
 
     <!-- 3. KHUNG MÁY CHỦ DISCORD (SERVER) -->
